@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { render } from '@testing-library/react';
+import * as React from 'react';
 
 function App() {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
+
+  React.useEffect(() => {
+    if (canvasRef.current) {
+      const renderCtx = canvasRef.current.getContext('2d');
+
+      if (renderCtx) {
+        setContext(renderCtx);
+      }
+    }
+
+    if (context) context.fillRect(5, 5, 100, 100);
+  }, [context]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        textAlign: 'center',
+      }}>
+      <canvas
+        id="canvas"
+        ref={canvasRef}
+        width={1000}
+        height={600}
+        style={{
+          border: '2px solid #000',
+          marginTop: 10,
+        }}
+      ></canvas>
     </div>
   );
 }
