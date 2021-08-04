@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { useTimer } from "react-timer-hook";
+import "./DisplayTime.css"
+import { useTimer } from "react-timer-hook"; //npm install react-timer-hook が必要
 
 type TimeFormat = {
   seconds: number;
@@ -13,7 +14,6 @@ type Props = {
 
 function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: number } ) {
 
-  // const { seconds, minutes, hours, ampm } = useTime({ /*format: "12-hour"*/ });
   const {
     seconds,
     minutes,
@@ -30,20 +30,29 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
   });
 
   useEffect(()=>{
+    // タイマーをセットする部分
     const sec = props.endTime.hours*3600 + props.endTime.minutes*60 + props.endTime.seconds
     const time = new Date();
     time.setSeconds(time.getSeconds() + sec);
     restart(time as unknown as number);
-  }, [props]);
+  }, [props]); //propsが更新されたら新しくタイマーがスタートする
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div /*style={{ textAlign: "center" }}*/ className="flex">
       <div style={{ fontSize: "500%" }}>
-        {/* <p>{props.text}</p> */}
         <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
-        {/* <span>{ampm}</span> */}
       </div>
-      
+      <button
+        onClick={()=> {
+          // タイマーをセットする部分
+          const sec = props.endTime.hours*3600 + props.endTime.minutes*60 + props.endTime.seconds
+          const time = new Date();
+          time.setSeconds(time.getSeconds() + sec);
+          restart(time as unknown as number);
+        }}
+      >
+        切替
+      </button>
     </div>
   );  
 
