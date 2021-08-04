@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
+//import PrivateMemo from './PrivateMemo';
+import MemoArea from './MemoArea';
 
 function Memo() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -22,7 +24,11 @@ function Memo() {
       style={{
         textAlign: 'center',
       }}>
-      <canvas
+        <div className="content">
+            <MemoArea/>
+            {/*<PrivateMemo/>*/}
+          </div>
+      {/*<canvas
         id="canvas"
         ref={canvasRef}
         width={1000}
@@ -31,7 +37,10 @@ function Memo() {
           border: '2px solid #000',
           marginTop: 10,
         }}
-      ></canvas>
+      >
+        
+      </canvas>*/}
+      
     </div>
   );
 }
