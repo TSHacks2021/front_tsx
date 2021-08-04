@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import SettingContents from "./SettingContents";
+import { TimeInfo } from "./TimeInfo";
 import Modal from "react-modal"; //npm install --save react-modal @types/react-modal でインストール
 
 Modal.setAppElement("#root");
 
-function SettingModal(){
+type Props = {
+  timeInfo: TimeInfo;
+}
+
+function SettingModal(props: Props){
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -24,7 +29,9 @@ function SettingModal(){
         >
           閉じる
         </button>
-        <SettingContents />
+        <SettingContents 
+          timeInfo={props.timeInfo}
+        />
       </Modal>
     </div>
   );

@@ -40,14 +40,14 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     const time = new Date();
     time.setSeconds(time.getSeconds() + sec);
     restart(time as unknown as number);
-  }, [props]); //propsが更新されたら新しくタイマーがスタートする
+  }, [props.endTime]); //propsが更新されたら新しくタイマーがスタートする
 
   return (
     <div /*style={{ textAlign: "center" }}*/ className="flex">
       <div style={{ fontSize: "500%" }}>
         <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
       </div>
-      <button
+      <button className="button"
         onClick={()=> {
           // タイマーをセットする部分
           const sec = props.endTime.hours*3600 + props.endTime.minutes*60 + props.endTime.seconds
