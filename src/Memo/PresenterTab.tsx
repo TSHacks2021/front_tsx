@@ -1,6 +1,7 @@
 import React from "react";
 import { TodayPresenter } from "./TodayPresenter";
 import Tab from "./Tabs/Tab"
+import "./PresenterTab.css"
 
 type PresenterTabProps = {
     presenter: TodayPresenter;
@@ -10,15 +11,15 @@ type PresenterTabProps = {
 const PresenterTab = (props:PresenterTabProps) => {
     const {name, memo} = props.presenter;
 
-    const handleMemoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onMemoChange(props.presenter.id, e.target.value);
     };
 
     return(
         <div className="presenter-tab">
             <Tab title="a">
-                <input
-                    type="text"
+                <textarea
+                    //type="text"
                     className="memo"
                     value={memo}
                     onChange={handleMemoChange}
