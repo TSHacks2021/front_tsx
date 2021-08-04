@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
+import TimeBar from './TimeBar';
 
 function Time() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -32,6 +33,7 @@ function Time() {
           marginTop: 10,
         }}
       ></canvas>
+      <TimeBar />
     </div>
   );
 }
