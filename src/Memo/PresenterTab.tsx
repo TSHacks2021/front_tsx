@@ -18,12 +18,19 @@ const PresenterTab = (props:PresenterTabProps) => {
     return(
         <div className="presenter-tab">
             <Tab title="a">
-                <textarea
-                    //type="text"
-                    className="memo"
-                    value={memo}
-                    onChange={handleMemoChange}
-                />
+                <div className="box">
+                <div className="field">
+                    <textarea
+                        //type="text"
+                        className="memo"
+                        value={memo}
+                        onChange={handleMemoChange}
+                    />
+                </div>
+                <div className="field">
+                    <input></input>
+                </div>
+                </div>
             </Tab>
         </div>
     )

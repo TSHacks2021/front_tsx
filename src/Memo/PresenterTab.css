@@ -2,3 +2,27 @@ textarea.memo {
     width: 90%;
     height: 90%;
 }
+
+.box {
+    text-align: center;
+    margin: auto;
+    box-sizing: border-box;
+    background: #fff;
+    /*border: 1px solid #666;*/
+    width:90%;
+    max-height: 210px;
+
+    display: flex;
+    flex-wrap: wrap;
+    /*overflow: hidden;*/
+}
+
+div.field {
+    box-sizing: border-box;
+    border: 2px solid #35557f;
+    width: calc(90%/2);
+    height: 100px;
+    margin: 2px;
+    
+    flex-grow: 1;
+}
