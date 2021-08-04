@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
+//import { useTime } from 'react-timer-hook';
 
 const begintime = 46800;
 const endtime = 53400;
@@ -7,15 +8,20 @@ const beginposition = 40;
 const endposition = 920;
 const vertical_bar_y_begin = 30;
 const vertical_bar_y_end = 110;
+const nowtime_bar_y_begin = 50;
+const nowtime_bar_y_end = 90;
+const nowtime_bar_x_diff = 20;
+const time = new Date();
 const bar_y_position = 70;
 const timetext_y_position = 140;
 const nametext_y_position = 45;
+const nowtimetext_y_position = 110;
 const names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
 const times:number[] = [1500, 1500, 600, 1500, 1500];
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
 
 function calcBarPosition() {
-  var barposition:number[] = new Array(4);
+  var barposition:number[] = new Array(times.length - 1);
   var timelength = endtime - begintime;
   var barlength = endposition - beginposition;
   var sum;
@@ -34,8 +40,8 @@ function calcBarPosition() {
 function secTohourmin(seconds:number) {
   var hour:number = Math.floor(seconds / 3600);
   var min:number = Math.floor((seconds - (hour * 3600)) / 60);
-  var hourstr:string
-  var minstr:string
+  var hourstr:string;
+  var minstr:string;
 
   if (hour < 10) {
     hourstr = '0' + String(hour);
@@ -127,6 +133,21 @@ function TimeBar() {
           context.fillText(secTohourmin(begintime + sum), barposition[i], timetext_y_position)
         }
       }
+
+      // now time
+      context.strokeStyle = 'black';
+      context.beginPath();
+      context.moveTo(beginposition+30-nowtime_bar_x_diff, nowtime_bar_y_begin);
+      context.lineTo(beginposition+30, bar_y_position);
+      context.stroke();
+      context.beginPath();
+      context.moveTo(beginposition+30-nowtime_bar_x_diff, nowtime_bar_y_end);
+      context.lineTo(beginposition+30, bar_y_position);
+      context.stroke();
+      context.font = '20px serif';
+      var strg = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+      //context.fillText(secTohourmin(time.getSeconds()), beginposition+30, nowtimetext_y_position)
+      context.fillText(strg, beginposition+30, nowtimetext_y_position)
     }
   }, [context]);
 

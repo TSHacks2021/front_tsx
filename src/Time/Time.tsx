@@ -33,7 +33,7 @@ function Time() {
           marginTop: 10,
         }}
       ></canvas>
-      <TimeBar />
+        <TimeBar />
     </div>
   );
 }
