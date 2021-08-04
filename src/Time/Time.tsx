@@ -1,8 +1,12 @@
 import { render } from '@testing-library/react';
 import { time } from 'console';
 import * as React from 'react';
+
 import DisplayTime from './DisplayTime';
 import SettingModal from './SettingModal';
+
+import TimeBar from './TimeBar';
+
 
 import { TimeInfo } from '../TimeInfo';
 
@@ -32,7 +36,7 @@ function Time(props: Props) {
       style={{
         textAlign: 'center',
       }}>
-      {/* <canvas
+      <canvas
         id="canvas"
         ref={canvasRef}
         width={1000}
@@ -41,13 +45,15 @@ function Time(props: Props) {
           border: '2px solid #000',
           marginTop: 10,
         }}
-      ></canvas> */}
+      ></canvas>
+      <TimeBar />
       <DisplayTime 
         endTime={{seconds:0, minutes:10, hours:0}}
       />
       <SettingModal 
         timeInfo={props.timeInfo}
       />
+        
     </div>
   );
 }
