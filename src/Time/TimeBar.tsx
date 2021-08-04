@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
-//import { useTime } from 'react-timer-hook';
 
-const begintime = 46800;
-const endtime = 53400;
+const begintime = 50400;
+const endtime = 57360;
 const beginposition = 40;
 const endposition = 920;
 const vertical_bar_y_begin = 30;
@@ -11,7 +10,7 @@ const vertical_bar_y_end = 110;
 const nowtime_bar_y_begin = 50;
 const nowtime_bar_y_end = 90;
 const nowtime_bar_x_diff = 20;
-const time = new Date();
+var time = new Date();
 const bar_y_position = 70;
 const timetext_y_position = 140;
 const nametext_y_position = 45;
@@ -37,6 +36,14 @@ function calcBarPosition() {
   return barposition;
 }
 
+function calcNowtimePosition(timestr:string) {
+  var timelength = endtime - begintime;
+  var barlength = endposition - beginposition;
+  var second = hourminsecTosec(timestr);
+
+  return (beginposition + (barlength * ((second - begintime) / timelength)));
+}
+
 function secTohourmin(seconds:number) {
   var hour:number = Math.floor(seconds / 3600);
   var min:number = Math.floor((seconds - (hour * 3600)) / 60);
@@ -59,15 +66,102 @@ function secTohourmin(seconds:number) {
   return (hourstr + ':' + minstr);
 }
 
+function hourminsecTosec(time:string) {
+  var timestrs = time.split(':');
+  var hour:number = Number(timestrs[0]);
+  var min:number = Number(timestrs[1]);
+  var second:number = Number(timestrs[2]);
+
+  return ((hour * 3600) + (min * 60) + second);
+}
+
 function TimeBar() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
 
   React.useEffect(() => {
+    function draw(){
+      time = new Date();
+      if (context) {
+        if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        var barposition = calcBarPosition();
+        context.globalAlpha = 1.0
+        context.strokeStyle = 'black';
+        context.textAlign = 'center';
+        // begin time
+        context.beginPath();
+        context.moveTo(beginposition, vertical_bar_y_begin);
+        context.lineTo(beginposition, vertical_bar_y_end);
+        context.stroke();
+        context.font = '25px serif';
+        context.fillText(names[0], (beginposition + barposition[0]) / 2, nametext_y_position)
+        context.font = '30px serif';
+        context.fillText(secTohourmin(begintime), beginposition, timetext_y_position)
+  
+        // end time
+        context.beginPath();
+        context.moveTo(endposition, vertical_bar_y_begin);
+        context.lineTo(endposition, vertical_bar_y_end);
+        context.stroke();
+        context.font = '25px serif';
+        context.fillText(names[names.length - 1], (barposition[barposition.length - 1] + endposition) / 2, nametext_y_position)
+        context.font = '30px serif';
+        context.fillText(secTohourmin(endtime), endposition, timetext_y_position)
+  
+        // change time
+        for (var i = 0; i < barposition.length + 1; i++) {
+          context.strokeStyle = 'black';
+          context.beginPath();
+          context.moveTo(barposition[i], vertical_bar_y_begin);
+          context.lineTo(barposition[i], vertical_bar_y_end);
+          context.stroke();
+          context.strokeStyle = colors[i];
+          context.beginPath();
+          if (i == 0) {
+            context.moveTo(beginposition, bar_y_position);
+          }
+          else {
+            context.moveTo(barposition[i - 1], bar_y_position);
+          }
+          if (i < barposition.length - 1) {
+            context.lineTo(barposition[i], bar_y_position);
+          }
+          else {
+            context.lineTo(endposition, bar_y_position);
+          }
+          context.stroke();
+          if (i < barposition.length) {
+            var sum = 0;
+            for (var j = 0; j <= i; j++) sum += times[j];
+            if (i > 0) {
+              context.font = '25px serif';
+              context.fillText(names[i], (barposition[i - 1] + barposition[i]) / 2, nametext_y_position)
+            }
+            context.font = '30px serif';
+            context.fillText(secTohourmin(begintime + sum), barposition[i], timetext_y_position)
+          }
+        }
+  
+        // now time
+        var timestr = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+        context.strokeStyle = 'black';
+        context.beginPath();
+        context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_begin);
+        context.lineTo(calcNowtimePosition(timestr), bar_y_position);
+        context.stroke();
+        context.beginPath();
+        context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_end);
+        context.lineTo(calcNowtimePosition(timestr), bar_y_position);
+        context.stroke();
+        context.font = '20px serif';
+        context.fillText(timestr, calcNowtimePosition(timestr), nowtimetext_y_position);
+      }
+    }
     if (canvasRef.current) {
       canvasRef.current.style.position = 'absolute';
       canvasRef.current.style.left = '280px';
       canvasRef.current.style.top = '10px';
+      setInterval(draw, 1000);
       const renderCtx = canvasRef.current.getContext('2d');
 
       if (renderCtx) {
@@ -135,19 +229,18 @@ function TimeBar() {
       }
 
       // now time
+      var timestr = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
       context.strokeStyle = 'black';
       context.beginPath();
-      context.moveTo(beginposition+30-nowtime_bar_x_diff, nowtime_bar_y_begin);
-      context.lineTo(beginposition+30, bar_y_position);
+      context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_begin);
+      context.lineTo(calcNowtimePosition(timestr), bar_y_position);
       context.stroke();
       context.beginPath();
-      context.moveTo(beginposition+30-nowtime_bar_x_diff, nowtime_bar_y_end);
-      context.lineTo(beginposition+30, bar_y_position);
+      context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_end);
+      context.lineTo(calcNowtimePosition(timestr), bar_y_position);
       context.stroke();
       context.font = '20px serif';
-      var strg = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-      //context.fillText(secTohourmin(time.getSeconds()), beginposition+30, nowtimetext_y_position)
-      context.fillText(strg, beginposition+30, nowtimetext_y_position)
+      context.fillText(timestr, calcNowtimePosition(timestr), nowtimetext_y_position);
     }
   }, [context]);
 
