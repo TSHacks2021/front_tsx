@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import SettingContents from "./SettingContents";
 import Modal from "react-modal"; //npm install --save react-modal @types/react-modal でインストール
 
 Modal.setAppElement("#root");
@@ -23,6 +24,7 @@ function SettingModal(){
         >
           閉じる
         </button>
+        <SettingContents />
       </Modal>
     </div>
   );
