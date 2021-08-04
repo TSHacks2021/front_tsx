@@ -10,22 +10,22 @@ const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
         name: "A",
-        memo: "a"
+        memo: ""
     },
     {
         id: 2,
         name: "B",
-        memo: "b"
+        memo: ""
     },
     {
         id: 3,
         name: "C",
-        memo: "c"
+        memo: ""
     },
     {
         id: 4,
         name: "D",
-        memo: "d"
+        memo: ""
     },
 ];
 
