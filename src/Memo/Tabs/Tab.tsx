@@ -1,8 +1,9 @@
 import React from "react";
 import "./Tab.css"
+import {TodayPresenter} from "../TodayPresenter"
 
 type TabProps = {
-    title: string
+    title: string;
 }
 
 const Tab: React.FC<TabProps> = ({children}) => {
