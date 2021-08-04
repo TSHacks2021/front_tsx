@@ -1,0 +1,18 @@
+.nav{
+    margin-top: 30px;
+    padding-bottom: 40px;
+    background-color: #fff;
+    list-style: none;
+    overflow: hidden;
+}
+
+.nav li {
+    /*width: calc(90%/3);*/
+    width: auto;
+    text-align: center;
+    /*background-color: grey;*/
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    margin-right: 2px;
+}
