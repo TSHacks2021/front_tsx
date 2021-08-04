@@ -3,9 +3,8 @@ import Modal from "react-modal"; //npm install --save react-modal @types/react-m
 
 Modal.setAppElement("#root");
 
-function SettingTime(){
+function SettingModal(){
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
 
   return (
     <div>
@@ -29,4 +28,4 @@ function SettingTime(){
   );
 }
 
-export default SettingTime;
+export default SettingModal;

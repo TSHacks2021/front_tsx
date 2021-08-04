@@ -12,6 +12,11 @@ type Props = {
   endTime: TimeFormat;
 }
 
+/*
+ * 引数は上のTimeFormatのように{seconds, minutes, hours}の３つを与える．
+ * 現在時刻から引数の時間分足した値をタイマーセット時間としてスタートする．（終了時刻を与えてタイマー動かした方がいい？）
+ * 引数propsの内容が変わるか，切り替えボタンが押されたときにタイマーがリスタートされる
+ */
 function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: number } ) {
 
   const {
