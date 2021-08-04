@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import Time from './Time/Time';
 import Memo from './Memo/Memo';
+import { TimeInfo } from './TimeInfo';
 import reportWebVitals from './reportWebVitals';
+
+const timeInfo = new TimeInfo();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Time />
+    <Time timeInfo={timeInfo}/>
     <Memo />
   </React.StrictMode>,
   document.getElementById('root')
