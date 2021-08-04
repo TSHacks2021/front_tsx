@@ -7,10 +7,19 @@ type TabProps = {
 }
 
 const Tab: React.FC<TabProps> = ({children}) => {
+
+    const chatfield = () => {
+        return(
+            <div>
+                
+            </div>
+        )
+    }
+
     return (
         <div className="box">
             <div className="Memo">{children}</div>
-            <div className="Memo">{children}</div>
+            {/*<div className="Memo"></div>*/}
         </div>
 
     );
