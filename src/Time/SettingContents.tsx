@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TimeInfo } from "./TimeInfo";
+import { TimeInfo } from "../TimeInfo";
 
 type Props = {
   timeInfo: TimeInfo;

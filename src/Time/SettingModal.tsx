@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import SettingContents from "./SettingContents";
-import { TimeInfo } from "./TimeInfo";
+import { TimeInfo } from "../TimeInfo";
 import Modal from "react-modal"; //npm install --save react-modal @types/react-modal でインストール
 
 Modal.setAppElement("#root");
