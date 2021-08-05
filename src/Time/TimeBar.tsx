@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { TimeInfo } from "../TimeInfo";
 
-// const begintime = 52600;
-// const endtime = 60200;
 const beginposition = 40;
 const endposition = 920;
 const vertical_bar_y_begin = 30;
@@ -15,8 +13,6 @@ const bar_y_position = 70;
 const timetext_y_position = 140;
 const nametext_y_position = 45;
 const nowtimetext_y_position = 110;
-// const names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
-// const times:number[] = [1500, 1500, 600, 1500, 1500];
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
 var checksetStartTime:any = null;
 var checksetEndTime:any = null;
@@ -172,7 +168,7 @@ function TimeBar(props: Props) {
   var endtime:number;
   var names:string[] = [];
   var times:number[] = [];
-  
+
   if (checksetStartTime) clearInterval(checksetStartTime);
   checksetStartTime = setInterval(function(){setStartTime(props.timeInfo.getStartTime())}, 100);
   starttime = hourminsecTosec(startTime.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'}));
