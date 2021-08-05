@@ -9,24 +9,25 @@ type Presenter = {
 
 export class TimeInfo{
 
-  private startTime: Date = new Date();
-  private endTime: Date  = new Date();
+  private startTime: Date = new Date(0);
+  private endTime: Date  = new Date(0);
   private numPresenters: number = 1;
   private presenters: Presenter[] = new Array(this.numPresenters);
   private breakTime = {interbal: 1, time: 0};
 
-  private begintime = 35600;
-  private endtime = 42200;
-  private names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
-  private times:number[] = [1500, 1500, 600, 1500, 1500];
+  constructor(){
+    this.startTime.setHours(14);
+    this.endTime.setHours(16);
+    this.presenters = [
+      {name:'abc', time:1500},
+      {name:'def', time:1500},
+      {name:'break', time:600},
+      {name:'ghi', time:1500},
+      {name:'jkl', time:1500}];
+  }
 
   getStartTime(){
     return this.startTime;
-  }
-
-  test(){
-    var a:any[] = [this.begintime, this.endtime, this.names, this.times]
-    return a;
   }
 
   getEndTime(){

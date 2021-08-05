@@ -18,14 +18,18 @@ const nowtimetext_y_position = 110;
 // const names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
 // const times:number[] = [1500, 1500, 600, 1500, 1500];
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
+var checksetStartTime:any = null;
+var checksetEndTime:any = null;
+var checksetPresenters:any = null;
+var checkdraw:any = null;
 
 type Props = {
   timeInfo: TimeInfo;
 }
 
-function calcBarPosition(begintime:number, endtime:number, times:number[]) {
+function calcBarPosition(starttime:number, endtime:number, times:number[]) {
   var barposition:number[] = new Array(times.length - 1);
-  var timelength = endtime - begintime;
+  var timelength = endtime - starttime;
   var barlength = endposition - beginposition;
   var sum;
 
@@ -40,12 +44,12 @@ function calcBarPosition(begintime:number, endtime:number, times:number[]) {
   return barposition;
 }
 
-function calcNowtimePosition(timestr:string, begintime:number, endtime:number) {
-  var timelength = endtime - begintime;
+function calcNowtimePosition(timestr:string, starttime:number, endtime:number) {
+  var timelength = endtime - starttime;
   var barlength = endposition - beginposition;
   var second = hourminsecTosec(timestr);
 
-  return (beginposition + (barlength * ((second - begintime) / timelength)));
+  return (beginposition + (barlength * ((second - starttime) / timelength)));
 }
 
 function secTohourmin(seconds:number) {
@@ -79,11 +83,11 @@ function hourminsecTosec(time:string) {
   return ((hour * 3600) + (min * 60) + second);
 }
 
-function draw(context:any, canvasRef:any, begintime:number, endtime:number, times:number[], names:string[]) {
+function draw(context:any, canvasRef:any, starttime:number, endtime:number, names:string[], times:number[]) {
   time = new Date();
   if (context) {
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    var barposition = calcBarPosition(begintime, endtime, times);
+    var barposition = calcBarPosition(starttime, endtime, times);
     context.globalAlpha = 1.0
     context.strokeStyle = 'black';
     context.textAlign = 'center';
@@ -95,7 +99,7 @@ function draw(context:any, canvasRef:any, begintime:number, endtime:number, time
     context.font = '25px serif';
     context.fillText(names[0], (beginposition + barposition[0]) / 2, nametext_y_position)
     context.font = '30px serif';
-    context.fillText(secTohourmin(begintime), beginposition, timetext_y_position)
+    context.fillText(secTohourmin(starttime), beginposition, timetext_y_position)
   
     // end time
     context.beginPath();
@@ -137,13 +141,13 @@ function draw(context:any, canvasRef:any, begintime:number, endtime:number, time
           context.fillText(names[i], (barposition[i - 1] + barposition[i]) / 2, nametext_y_position)
         }
         context.font = '30px serif';
-        context.fillText(secTohourmin(begintime + sum), barposition[i], timetext_y_position)
+        context.fillText(secTohourmin(starttime + sum), barposition[i], timetext_y_position)
       }
     }
   
     // now time
     var timestr = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-    var nowtimeposition = calcNowtimePosition(timestr, begintime, endtime);
+    var nowtimeposition = calcNowtimePosition(timestr, starttime, endtime);
     context.strokeStyle = 'black';
     context.beginPath();
     context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_begin);
@@ -161,27 +165,44 @@ function draw(context:any, canvasRef:any, begintime:number, endtime:number, time
 function TimeBar(props: Props) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
+  const [startTime, setStartTime] = React.useState(props.timeInfo.getStartTime());
+  const [endTime, setEndTime] = React.useState(props.timeInfo.getEndTime());
+  const [presenters, setPresenters] = React.useState(props.timeInfo.getPresenters());
+  var starttime:number;
+  var endtime:number;
+  var names:string[] = [];
+  var times:number[] = [];
+  
+  if (checksetStartTime) clearInterval(checksetStartTime);
+  checksetStartTime = setInterval(function(){setStartTime(props.timeInfo.getStartTime())}, 100);
+  starttime = hourminsecTosec(startTime.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'}));
+
+  if (checksetEndTime) clearInterval(checksetEndTime);
+  checksetEndTime = setInterval(function(){setEndTime(props.timeInfo.getEndTime())}, 100);
+  endtime = hourminsecTosec(endTime.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'}));
+
+  if (checksetPresenters) clearInterval(checksetPresenters);
+  checksetPresenters = setInterval(function(){setPresenters(props.timeInfo.getPresenters())}, 100);
+  for (var i = 0; i < presenters.length; i++) {
+    names.push(presenters[i].name);
+    times.push(presenters[i].time);
+  }
 
   React.useEffect(() => {
-    var test = props.timeInfo.test();
-    var begintime = test[0];
-    var endtime = test[1];
-    var names = test[2];
-    var times = test[3];
-
     if (canvasRef.current) {
       canvasRef.current.style.position = 'absolute';
       canvasRef.current.style.left = '280px';
       canvasRef.current.style.top = '10px';
-      setInterval(function(){draw(context, canvasRef, begintime, endtime, times, names)}, 1000);
+      if (checkdraw) clearInterval(checkdraw);
+      checkdraw = setInterval(function(){draw(context, canvasRef, starttime, endtime, names, times)}, 10);
       const renderCtx = canvasRef.current.getContext('2d');
 
       if (renderCtx) {
         setContext(renderCtx);
       }
     }
-    draw(context, canvasRef, begintime, endtime, times, names);
-  }, [context]);
+    draw(context, canvasRef, starttime, endtime, names, times);
+  }, [context, startTime, endTime, presenters]);
 
   return (
     <div
