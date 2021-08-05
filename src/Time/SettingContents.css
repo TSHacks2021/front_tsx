@@ -1,0 +1,11 @@
+.flex{
+  display: flex;
+
+  margin: 10px;
+}
+
+.namebutton{
+  width: auto;
+  margin: 5px;
+  
+}

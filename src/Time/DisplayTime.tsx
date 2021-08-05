@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
 import "./DisplayTime.css"
 import { useTimer } from "react-timer-hook"; //npm install react-timer-hook が必要
-
-type TimeFormat = {
-  seconds: number;
-  minutes: number;
-  hours: number;
-}
+import { TimeInfo } from "../TimeInfo";
 
 type Props = {
-  endTime: TimeFormat;
+  timeInfo: TimeInfo;
 }
+// type TimeFormat = {
+//   seconds: number;
+//   minutes: number;
+//   hours: number;
+// }
+
+// type Props = {
+//   endTime: TimeFormat;
+// }
+
 
 /*
  * 引数は上のTimeFormatのように{seconds, minutes, hours}の３つを与える．
@@ -34,30 +39,48 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     onExpire: () => console.warn("onExpire called"),
   });
 
+  var presentTime: number;
+  var startDate: Date;
+  var endDate: Date;
+
   useEffect(()=>{
     // タイマーをセットする部分
-    const sec = props.endTime.hours*3600 + props.endTime.minutes*60 + props.endTime.seconds
-    const time = new Date();
-    time.setSeconds(time.getSeconds() + sec);
-    restart(time as unknown as number);
-  }, [props.endTime]); //propsが更新されたら新しくタイマーがスタートする
+    presentTime = 10;
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setSeconds(startDate.getSeconds() + presentTime);
+    restart(endDate as unknown as number);
+  }, [])
+
+
+  const handleClick = () =>{
+    pause();
+    //今の発表者が発表した時間を計算
+    const remain = hours*3600 + minutes*60 + seconds;
+    if(remain > 0){
+      // 早く終わったとき
+      presentTime = presentTime - remain;
+    }else{
+      // 時間オーバーしたとき
+      const now = new Date();
+      presentTime = (now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds()) - (startDate.getHours()*3600 + startDate.getMinutes()*60 + startDate.getSeconds())
+    }
+
+    // タイマーをセットする部分
+    presentTime = props.timeInfo.toNextPresenter(presentTime);
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setSeconds(startDate.getSeconds() + presentTime);
+    restart(endDate as unknown as number);
+  }
+
 
   return (
     <div /*style={{ textAlign: "center" }}*/ className="flex">
       <div style={{ fontSize: "500%" }}>
-        <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+        <span>{( '00' + minutes ).slice( -2 )}</span>:<span>{( '00' + seconds ).slice( -2 )}</span>
       </div>
-      <button className="button"
-        onClick={()=> {
-          // タイマーをセットする部分
-          const sec = props.endTime.hours*3600 + props.endTime.minutes*60 + props.endTime.seconds
-          const time = new Date();
-          time.setSeconds(time.getSeconds() + sec);
-          restart(time as unknown as number);
-        }}
-      >
-        切替
-      </button>
+      <button className="button" onClick={()=>handleClick}>  切替  </button>
     </div>
   );  
 
