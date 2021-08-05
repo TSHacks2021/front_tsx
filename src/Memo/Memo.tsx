@@ -14,10 +14,14 @@ function Memo(props: MemoProps) {
 
   const presenter = props.timeInfo.getPresenters()
   const presenterNum = props.timeInfo.getNumPresenters()
-  var presenters:string[] = new Array(presenterNum)
+  var presenters:string[] = new Array(0)
 
   for(var i = 0; i < presenterNum; i++) {
-    presenters[i] = presenter[i].name
+    var temp_name = presenter[i].name
+    if(temp_name != 'break') {
+      //presenters[i] = presenter[i].name
+      presenters.push(presenter[i].name)
+    }
   }
 
   React.useEffect(() => {
@@ -40,7 +44,7 @@ function Memo(props: MemoProps) {
         <div className="content">
             <MemoArea
               presenters={presenters}
-              presenterNum={presenterNum}/>
+              presenterNum={presenters.length}/>
             {/*<PrivateMemo/>*/}
           </div>
       {/*<canvas
