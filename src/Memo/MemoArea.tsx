@@ -10,22 +10,26 @@ const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
         name: "A",
-        memo: ""
+        memo: "a",
+        chats: ["こんにちは！a", "aさん", "遊びましょう！", "今度また～"],
     },
     {
         id: 2,
         name: "B",
-        memo: ""
+        memo: "b",
+        chats: ["こんにちは！b"],
     },
     {
         id: 3,
         name: "C",
-        memo: ""
+        memo: "c",
+        chats: [""],
     },
     {
         id: 4,
         name: "D",
-        memo: ""
+        memo: "d",
+        chats: [""],
     },
 ];
 
@@ -47,7 +51,6 @@ const MemoArea: React.FC = () => {
                 presenter={p}
                 key={p.id}
                 onMemoChange={(id, memo) => handleMemoChange(id, memo)}
-                //onMemoChange={(id, memo) => {}}
             />
         );
     });
