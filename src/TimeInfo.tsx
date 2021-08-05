@@ -18,6 +18,7 @@ export class TimeInfo{
   constructor(){
     this.startTime.setHours(14);
     this.endTime.setHours(16);
+    this.numPresenters = 5;
     this.presenters = [
       {name:'abc', time:1500},
       {name:'def', time:1500},
