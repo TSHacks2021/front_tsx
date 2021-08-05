@@ -1,6 +1,18 @@
 textarea.memo {
+    display: block;
     width: 90%;
+    padding: 4px 16px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 0 0 1px #ccc inset;
+    appearance: none;
+    resize: vertical;
     height: 90%;
+}
+
+textarea.memo:focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px rgb(33, 150, 243) inset;
 }
 
 .box {
@@ -19,9 +31,9 @@ textarea.memo {
 
 div.field {
     box-sizing: border-box;
-    border: 2px solid #35557f;
+    /*border: 2px solid #35557f;*/
     width: calc(90%/2);
-    height: 100px;
+    height: 200px;
     margin: 2px;
     
     flex-grow: 1;
