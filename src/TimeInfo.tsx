@@ -9,11 +9,11 @@ type Presenter = {
 
 export class TimeInfo{
 
-  private startTime: Date = new Date();
-  private endTime: Date  = new Date();
-  private numPresenters: number = 1;
-  private presenters: Presenter[] = new Array(this.numPresenters);
-  private breakTime = {interbal: 1, time: 0};
+  public startTime: Date = new Date();
+  public endTime: Date  = new Date();
+  public numPresenters: number = 1;
+  public presenters: Presenter[] = new Array(this.numPresenters);
+  public breakTime = {interbal: 1, time: 0};
 
   getStartTime(){
     return this.startTime;
@@ -33,6 +33,10 @@ export class TimeInfo{
 
   getNumPresenters(){
     return this.numPresenters;
+  }
+
+  setNumPresenters(num: number){
+    this.numPresenters = num;
   }
 
   addNumPresenters(num: number){
