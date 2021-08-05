@@ -16,7 +16,7 @@ export class TimeInfo{
   public breakTime = {interbal: 1, time: 0};
 
   constructor(){
-    this.startTime.setHours(14);
+    this.startTime.setHours(13);
     this.endTime.setHours(16);
     this.numPresenters = 5;
     this.presenters = [
