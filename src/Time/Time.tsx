@@ -46,7 +46,7 @@ function Time(props: Props) {
           marginTop: 10,
         }}
       ></canvas>
-      <TimeBar />
+      <TimeBar timeInfo={props.timeInfo}/>
       <DisplayTime 
         endTime={{seconds:0, minutes:10, hours:0}}
       />

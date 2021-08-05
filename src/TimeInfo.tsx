@@ -15,6 +15,17 @@ export class TimeInfo{
   public presenters: Presenter[] = new Array(this.numPresenters);
   public breakTime = {interbal: 1, time: 0};
 
+  constructor(){
+    this.startTime.setHours(14);
+    this.endTime.setHours(16);
+    this.presenters = [
+      {name:'abc', time:1500},
+      {name:'def', time:1500},
+      {name:'break', time:600},
+      {name:'ghi', time:1500},
+      {name:'jkl', time:1500}];
+  }
+
   getStartTime(){
     return this.startTime;
   }
@@ -41,6 +52,8 @@ export class TimeInfo{
 
   addNumPresenters(num: number){
     this.numPresenters = this.numPresenters + num;
+    this.endTime.setSeconds(this.endTime.getSeconds() + 60);
+    this.endTime = new Date(this.endTime);
   }
 
   getPresenters(){
