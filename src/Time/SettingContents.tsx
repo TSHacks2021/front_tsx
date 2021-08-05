@@ -77,7 +77,10 @@ function SettingContents(props: Props) {
         console.log(props.timeInfo.numPresenters)
         setNumPresenters(props.timeInfo.getNumPresenters());
       }}>人数+</button>
-      <input type="text" className="input" name="presenter" onChange={handlePresenter}></input>
+      <div className="input">
+       <input type="text" name="presenter"></input>
+       <input type="checkbox"></input>
+      </div>
       <button onClick={()=>{
         console.log('CLONE')
         var node = document.getElementsByClassName("input")[0];
