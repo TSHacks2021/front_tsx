@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react';
 import * as React from 'react';
+import { TimeInfo } from "../TimeInfo";
 
-const begintime = 52600;
-const endtime = 60200;
+// const begintime = 52600;
+// const endtime = 60200;
 const beginposition = 40;
 const endposition = 920;
 const vertical_bar_y_begin = 30;
@@ -15,11 +15,15 @@ const bar_y_position = 70;
 const timetext_y_position = 140;
 const nametext_y_position = 45;
 const nowtimetext_y_position = 110;
-const names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
-const times:number[] = [1500, 1500, 600, 1500, 1500];
+// const names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
+// const times:number[] = [1500, 1500, 600, 1500, 1500];
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
 
-function calcBarPosition() {
+type Props = {
+  timeInfo: TimeInfo;
+}
+
+function calcBarPosition(begintime:number, endtime:number, times:number[]) {
   var barposition:number[] = new Array(times.length - 1);
   var timelength = endtime - begintime;
   var barlength = endposition - beginposition;
@@ -36,7 +40,7 @@ function calcBarPosition() {
   return barposition;
 }
 
-function calcNowtimePosition(timestr:string) {
+function calcNowtimePosition(timestr:string, begintime:number, endtime:number) {
   var timelength = endtime - begintime;
   var barlength = endposition - beginposition;
   var second = hourminsecTosec(timestr);
@@ -75,11 +79,11 @@ function hourminsecTosec(time:string) {
   return ((hour * 3600) + (min * 60) + second);
 }
 
-function draw(context:any, canvasRef:any) {
+function draw(context:any, canvasRef:any, begintime:number, endtime:number, times:number[], names:string[]) {
   time = new Date();
   if (context) {
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    var barposition = calcBarPosition();
+    var barposition = calcBarPosition(begintime, endtime, times);
     context.globalAlpha = 1.0
     context.strokeStyle = 'black';
     context.textAlign = 'center';
@@ -139,37 +143,44 @@ function draw(context:any, canvasRef:any) {
   
     // now time
     var timestr = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    var nowtimeposition = calcNowtimePosition(timestr, begintime, endtime);
     context.strokeStyle = 'black';
     context.beginPath();
-    context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_begin);
-    context.lineTo(calcNowtimePosition(timestr), bar_y_position);
+    context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_begin);
+    context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.beginPath();
-    context.moveTo(calcNowtimePosition(timestr) - nowtime_bar_x_diff, nowtime_bar_y_end);
-    context.lineTo(calcNowtimePosition(timestr), bar_y_position);
+    context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_end);
+    context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.font = '20px serif';
-    context.fillText(timestr, calcNowtimePosition(timestr), nowtimetext_y_position);
+    context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
   }
 }
 
-function TimeBar() {
+function TimeBar(props: Props) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
 
   React.useEffect(() => {
+    var test = props.timeInfo.test();
+    var begintime = test[0];
+    var endtime = test[1];
+    var names = test[2];
+    var times = test[3];
+
     if (canvasRef.current) {
       canvasRef.current.style.position = 'absolute';
       canvasRef.current.style.left = '280px';
       canvasRef.current.style.top = '10px';
-      setInterval(function(){draw(context, canvasRef)}, 1000);
+      setInterval(function(){draw(context, canvasRef, begintime, endtime, times, names)}, 1000);
       const renderCtx = canvasRef.current.getContext('2d');
 
       if (renderCtx) {
         setContext(renderCtx);
       }
     }
-    draw(context, canvasRef);
+    draw(context, canvasRef, begintime, endtime, times, names);
   }, [context]);
 
   return (

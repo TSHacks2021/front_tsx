@@ -15,8 +15,18 @@ export class TimeInfo{
   private presenters: Presenter[] = new Array(this.numPresenters);
   private breakTime = {interbal: 1, time: 0};
 
+  private begintime = 35600;
+  private endtime = 42200;
+  private names:string[] = ['abc', 'def', 'break', 'ghi', 'jkl'];
+  private times:number[] = [1500, 1500, 600, 1500, 1500];
+
   getStartTime(){
     return this.startTime;
+  }
+
+  test(){
+    var a:any[] = [this.begintime, this.endtime, this.names, this.times]
+    return a;
   }
 
   getEndTime(){
