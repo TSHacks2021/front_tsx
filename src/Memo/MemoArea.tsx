@@ -10,22 +10,26 @@ const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
         name: "A",
-        memo: ""
+        memo: "",
+        chats: ["こんにちは！a", "aさん", "遊びましょう！", "今度また～"],
     },
     {
         id: 2,
         name: "B",
-        memo: ""
+        memo: "",
+        chats: ["こんにちは！b"],
     },
     {
         id: 3,
         name: "C",
-        memo: ""
+        memo: "",
+        chats: [""],
     },
     {
         id: 4,
         name: "D",
-        memo: ""
+        memo: "",
+        chats: [""],
     },
 ];
 
