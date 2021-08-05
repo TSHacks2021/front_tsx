@@ -1,14 +1,14 @@
 .nav{
+
     margin-top: 30px;
-    padding-bottom: 40px;
+    /*padding-bottom: 40px;*/
     background-color: #fff;
     list-style: none;
     overflow: hidden;
 }
 
 .nav li {
-    /*width: calc(90%/3);*/
-    width: auto;
+    width: calc(90%/5);
     text-align: center;
     /*background-color: grey;*/
     float: left;
