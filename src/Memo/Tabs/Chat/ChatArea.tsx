@@ -20,6 +20,7 @@ import TextInput from "./TextInput";
 }*/
 type ChatAreaProps = {
     chats: string[];
+    onSendButtonClick: (chat: string) => void;
 }
 
 const ChatArea = (props:ChatAreaProps) => {
@@ -34,6 +35,7 @@ const ChatArea = (props:ChatAreaProps) => {
     }
 
     const handleButtonClick = () => {
+        //この場所を変えればチャットできるか？
         const newChats = chats
         newChats.push(newchat)
         setChats(newChats)
@@ -41,6 +43,7 @@ const ChatArea = (props:ChatAreaProps) => {
         //レンダリングしたい場所でこれを差し込むだけ
         setUpdata(update?false:true)
         console.log(props.chats)
+        props.onSendButtonClick(newchat);
     }
 
     return(
