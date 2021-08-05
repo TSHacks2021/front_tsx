@@ -48,6 +48,8 @@ export class TimeInfo{
 
   addNumPresenters(num: number){
     this.numPresenters = this.numPresenters + num;
+    this.endTime.setSeconds(this.endTime.getSeconds() + 60);
+    this.endTime = new Date(this.endTime);
   }
 
   getPresenters(){
