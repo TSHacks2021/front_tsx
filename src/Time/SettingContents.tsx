@@ -57,11 +57,11 @@ function SettingContents(props: Props) {
     setNumPresenters(n);
   }
 
-  // handlePresenterInfo(){
-  //   return (
-  //     <input></input>
-  //   );
-  // }
+
+
+  const handlePresenter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    var name = e.target.value;
+  }
 
   return(
     <div>
@@ -77,7 +77,23 @@ function SettingContents(props: Props) {
         console.log(props.timeInfo.numPresenters)
         setNumPresenters(props.timeInfo.getNumPresenters());
       }}>人数+</button>
-      {/* <p>{}</p> */}
+      <input type="text" className="input" name="presenter" onChange={handlePresenter}></input>
+      <button onClick={()=>{
+        console.log('CLONE')
+        var node = document.getElementsByClassName("input")[0];
+        node?.after(node.cloneNode());
+      }}>CLONE</button>
+      <button onClick={()=>{
+        console.log('DELETE')
+        var nodes = document.getElementsByClassName("input");
+        var node = nodes[nodes.length-1]
+        node.remove();
+      }}>DELETE</button>
+      <p>各発表時間</p>
+      <input type="number"></input>
+      <p>休憩時間</p>
+      <input type="number"></input>
+      
     </div>
   );
 }
