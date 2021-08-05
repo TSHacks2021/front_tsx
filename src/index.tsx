@@ -13,14 +13,24 @@ let ws = new WebSocket("ws://localhost:1323/ws");
 let socket = new Socket(ws);
 socket.on("message", receiveMessage);
 function receiveMessage(e:any){
-  let message = JSON.parse(e.data)
+  let message = JSON.parse(e.data);
   console.log(message);
+  
 }
 
 ReactDOM.render(
   <React.StrictMode>
     <Time timeInfo={timeInfo}/>
     <Memo />
+    <button onClick={()=>{
+      // var message = "React!";
+      var message = {messagetype:"memo", message:"React!"};
+      var mes_json = JSON.stringify(message);
+      console.log(mes_json);
+      socket.emit(mes_json);
+    }}>
+      送信
+    </button>
   </React.StrictMode>,
   document.getElementById('root')
 );
