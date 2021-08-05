@@ -7,8 +7,7 @@
 }
 
 .nav li {
-    /*width: calc(90%/3);*/
-    width: auto;
+    width: calc(90%/5);
     text-align: center;
     /*background-color: grey;*/
     float: left;

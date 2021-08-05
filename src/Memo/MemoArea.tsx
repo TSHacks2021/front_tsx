@@ -4,34 +4,50 @@ import Tab from "./Tabs/Tab"
 import Memo from "./Memo";
 import { TodayPresenter } from "./TodayPresenter";
 import PresenterTab from "./PresenterTab"
+
+import {TimeInfo} from "../TimeInfo";
 //function SampleMemo() {
 
 const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
         name: "A",
-        memo: ""
+        memo: "",
+        chats: ["こんにちは！a", "aさん", "遊びましょう！", "今度また～"],
     },
     {
         id: 2,
         name: "B",
-        memo: ""
+        memo: "",
+        chats: ["こんにちは！b"],
     },
     {
         id: 3,
         name: "C",
-        memo: ""
+        memo: "",
+        chats: [""],
     },
     {
         id: 4,
         name: "D",
-        memo: ""
+        memo: "",
+        chats: [""],
     },
 ];
 
-const MemoArea: React.FC = () => {
-    const[presenters, setPresenters] = useState(dummyPresenters);
+type MemoAreaProps = {
+    presenters: string[];
+    presenterNum: number;
+}
 
+const MemoArea = (props: MemoAreaProps) => {
+    //const[presenters, setPresenters] = useState(dummyPresenters);
+    var dummypresenters: TodayPresenter[] = new Array(props.presenterNum)
+    for(var i = 0; i < props.presenterNum;i++) {
+        dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[""]}
+    }
+    const[presenters, setPresenters] = useState(dummypresenters)
+    
     const handleMemoChange = (id: number, memo: string) => {
         const newPresenters = presenters.map((p) => {
             return p.id === id

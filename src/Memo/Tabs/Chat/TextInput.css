@@ -1,0 +1,14 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.wrap .text {
+    width: 80%;
+}
+
+.wrap button {
+    margin-top: 24px;
+    margin-right: 0;
+    width: 20%;
+}
