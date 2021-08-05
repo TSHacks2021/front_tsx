@@ -4,6 +4,8 @@ import Tab from "./Tabs/Tab"
 import Memo from "./Memo";
 import { TodayPresenter } from "./TodayPresenter";
 import PresenterTab from "./PresenterTab"
+
+import {TimeInfo} from "../TimeInfo";
 //function SampleMemo() {
 
 const dummyPresenters: TodayPresenter[] = [
@@ -33,9 +35,19 @@ const dummyPresenters: TodayPresenter[] = [
     },
 ];
 
-const MemoArea: React.FC = () => {
-    const[presenters, setPresenters] = useState(dummyPresenters);
+type MemoAreaProps = {
+    presenters: string[];
+    presenterNum: number;
+}
 
+const MemoArea = (props: MemoAreaProps) => {
+    //const[presenters, setPresenters] = useState(dummyPresenters);
+    var dummypresenters: TodayPresenter[] = new Array(props.presenterNum)
+    for(var i = 0; i < props.presenterNum;i++) {
+        dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[""]}
+    }
+    const[presenters, setPresenters] = useState(dummypresenters)
+    
     const handleMemoChange = (id: number, memo: string) => {
         const newPresenters = presenters.map((p) => {
             return p.id === id

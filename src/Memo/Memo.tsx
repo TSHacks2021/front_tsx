@@ -2,10 +2,23 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 //import PrivateMemo from './PrivateMemo';
 import MemoArea from './MemoArea';
+import {TimeInfo} from '../TimeInfo'
 
-function Memo() {
+type MemoProps = {
+  timeInfo: TimeInfo;
+}
+
+function Memo(props: MemoProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
+
+  const presenter = props.timeInfo.getPresenters()
+  const presenterNum = props.timeInfo.getNumPresenters()
+  var presenters:string[] = new Array(presenterNum)
+
+  for(var i = 0; i < presenterNum; i++) {
+    presenters[i] = presenter[i].name
+  }
 
   React.useEffect(() => {
     if (canvasRef.current) {
@@ -25,7 +38,9 @@ function Memo() {
         textAlign: 'center',
       }}>
         <div className="content">
-            <MemoArea/>
+            <MemoArea
+              presenters={presenters}
+              presenterNum={presenterNum}/>
             {/*<PrivateMemo/>*/}
           </div>
       {/*<canvas
