@@ -11,7 +11,7 @@ const timeInfo = new TimeInfo();
 ReactDOM.render(
   <React.StrictMode>
     <Time timeInfo={timeInfo}/>
-    <Memo />
+    <Memo timeInfo={timeInfo}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
