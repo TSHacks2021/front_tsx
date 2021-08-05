@@ -4,9 +4,18 @@ import './index.css';
 import Time from './Time/Time';
 import Memo from './Memo/Memo';
 import { TimeInfo } from './TimeInfo';
+import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
 
 const timeInfo = new TimeInfo();
+
+let ws = new WebSocket("ws://localhost:1323/ws");
+let socket = new Socket(ws);
+socket.on("message", receiveMessage);
+function receiveMessage(e:any){
+  let message = JSON.parse(e.data)
+  console.log(message);
+}
 
 ReactDOM.render(
   <React.StrictMode>
