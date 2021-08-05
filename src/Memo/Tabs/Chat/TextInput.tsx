@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useRef} from "react";
 
 import TextField from "@material-ui/core/TextField";
 import "./TextInput.css"
@@ -31,8 +31,9 @@ type TextInputProps = {
 };
 
 const TextInput = (props:TextInputProps) => {
+    var textArea = document.getElementById("standard-text")
     const handleSendButtonClick = (e: any) => {
-        props.onButtonClick(e)
+        props.onButtonClick(e);
         //console.log(e)
     }
 
