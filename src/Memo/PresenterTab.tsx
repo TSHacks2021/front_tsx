@@ -2,6 +2,7 @@ import React from "react";
 import { TodayPresenter } from "./TodayPresenter";
 import Tab from "./Tabs/Tab"
 import "./PresenterTab.css"
+import ChatArea from "./Tabs/Chat/ChatArea";
 
 type PresenterTabProps = {
     presenter: TodayPresenter;
@@ -9,7 +10,7 @@ type PresenterTabProps = {
 };
 
 const PresenterTab = (props:PresenterTabProps) => {
-    const {name, memo} = props.presenter;
+    const {name, memo, chats} = props.presenter;
 
     const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onMemoChange(props.presenter.id, e.target.value);
@@ -28,7 +29,9 @@ const PresenterTab = (props:PresenterTabProps) => {
                     />
                 </div>
                 <div className="field">
-                    <input></input>
+                    <ChatArea
+                        chats={chats}/*value={chats}*/
+                    />
                 </div>
                 </div>
             </Tab>
