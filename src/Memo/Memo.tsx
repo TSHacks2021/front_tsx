@@ -3,9 +3,11 @@ import * as React from 'react';
 //import PrivateMemo from './PrivateMemo';
 import MemoArea from './MemoArea';
 import {TimeInfo} from '../TimeInfo'
+//import Socket from './WebSocket';
 
 type MemoProps = {
   timeInfo: TimeInfo;
+  //socket: Socket;
 }
 
 function Memo(props: MemoProps) {
@@ -40,7 +42,9 @@ function Memo(props: MemoProps) {
         <div className="content">
             <MemoArea
               presenters={presenters}
-              presenterNum={presenterNum}/>
+              presenterNum={presenterNum}
+              /*socket={socket}*/
+              />
             {/*<PrivateMemo/>*/}
           </div>
       {/*<canvas
