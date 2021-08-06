@@ -50,7 +50,6 @@ const ChatArea = (props:ChatAreaProps) => {
                     chats = {chats}
                     />
                 <TextInput
-                    onChatChange={handleChatChange}
                     onButtonClick={handleButtonClick}/>
             </div>
         </React.Fragment>
