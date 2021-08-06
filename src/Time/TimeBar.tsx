@@ -4,17 +4,16 @@ import { useWindowDimensions } from "../WindowDimensions";
 
 const canvas_left_mag = 0.182;
 const canvas_right_mag = 0.625;
+const canvas_bottom_mag = 0.097;
 const startposition_mag = 0.026;
 const endposition_mag = 0.599;
 const nowtime_bar_x_diff_mag = 0.013;
-const vertical_bar_y_begin = 30;
-const vertical_bar_y_end = 110;
-const nowtime_bar_y_begin = 50;
-const nowtime_bar_y_end = 90;
+const vertical_bar_y_mag = 0.02;
+const nowtime_bar_y_mag = 0.015;
 var time:Date;
-const bar_y_position = 70;
-const timetext_y_position = 140;
-const nametext_y_position = 45;
+const bar_y_position_mag = 0.045;
+const timetext_y_mag = 0.040;
+const nametext_y_mag = 0.015;
 const nowtimetext_y_position = 110;
 const font_size_little_mag = 0.0162;
 const font_size_big_mag = 0.0195;
@@ -90,39 +89,40 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
   var nowtime_bar_x_diff = nowtime_bar_x_diff_mag * width;
   var font_little = String(font_size_little_mag * width) + 'px serif';
   var font_big = String(font_size_big_mag * width) + 'px serif';
+  var bar_y_position = bar_y_position_mag * width;
   time = new Date();
   if (context) {
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     var barposition = calcBarPosition(starttime, endtime, times, startposition, endposition);
-    context.globalAlpha = 1.0
+    context.globalAlpha = 1.0;
     context.strokeStyle = 'black';
     context.textAlign = 'center';
     // begin time
     context.beginPath();
-    context.moveTo(startposition, vertical_bar_y_begin);
-    context.lineTo(startposition, vertical_bar_y_end);
+    context.moveTo(startposition, bar_y_position - (vertical_bar_y_mag * width));
+    context.lineTo(startposition, bar_y_position + (vertical_bar_y_mag * width));
     context.stroke();
     context.font = font_little;
-    context.fillText(names[0], (startposition + barposition[0]) / 2, nametext_y_position)
+    context.fillText(names[0], (startposition + barposition[0]) / 2, bar_y_position - (nametext_y_mag * width));
     context.font = font_big;
-    context.fillText(secTohourmin(starttime), startposition, timetext_y_position)
+    context.fillText(secTohourmin(starttime), startposition, bar_y_position + (timetext_y_mag * width));
   
     // end time
     context.beginPath();
-    context.moveTo(endposition, vertical_bar_y_begin);
-    context.lineTo(endposition, vertical_bar_y_end);
+    context.moveTo(endposition, bar_y_position - (vertical_bar_y_mag * width));
+    context.lineTo(endposition, bar_y_position + (vertical_bar_y_mag * width));
     context.stroke();
     context.font = font_little;
-    context.fillText(names[names.length - 1], (barposition[barposition.length - 1] + endposition) / 2, nametext_y_position)
+    context.fillText(names[names.length - 1], (barposition[barposition.length - 1] + endposition) / 2, bar_y_position - (nametext_y_mag * width));
     context.font = font_big;
-    context.fillText(secTohourmin(endtime), endposition, timetext_y_position)
+    context.fillText(secTohourmin(endtime), endposition, bar_y_position + (timetext_y_mag * width));
   
     // change time
     for (var i = 0; i < barposition.length + 1; i++) {
       context.strokeStyle = 'black';
       context.beginPath();
-      context.moveTo(barposition[i], vertical_bar_y_begin);
-      context.lineTo(barposition[i], vertical_bar_y_end);
+      context.moveTo(barposition[i], bar_y_position - (vertical_bar_y_mag * width));
+      context.lineTo(barposition[i], bar_y_position + (vertical_bar_y_mag * width));
       context.stroke();
       context.strokeStyle = colors[i];
       context.beginPath();
@@ -144,10 +144,10 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
         for (var j = 0; j <= i; j++) sum += times[j];
         if (i > 0) {
           context.font = font_little;
-          context.fillText(names[i], (barposition[i - 1] + barposition[i]) / 2, nametext_y_position)
+          context.fillText(names[i], (barposition[i - 1] + barposition[i]) / 2, bar_y_position - (nametext_y_mag * width));
         }
         context.font = font_big;
-        context.fillText(secTohourmin(starttime + sum), barposition[i], timetext_y_position)
+        context.fillText(secTohourmin(starttime + sum), barposition[i], bar_y_position + (timetext_y_mag * width));
       }
     }
   
@@ -156,11 +156,11 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
     var nowtimeposition = calcNowtimePosition(timestr, starttime, endtime, startposition, endposition);
     context.strokeStyle = 'black';
     context.beginPath();
-    context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_begin);
+    context.moveTo(nowtimeposition - nowtime_bar_x_diff, bar_y_position - (nowtime_bar_y_mag * width));
     context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.beginPath();
-    context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_end);
+    context.moveTo(nowtimeposition - nowtime_bar_x_diff, bar_y_position + (nowtime_bar_y_mag * width));
     context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.font = '20px serif';
@@ -223,7 +223,7 @@ function TimeBar(props: Props) {
         id="canvas"
         ref={canvasRef}
         width={canvas_right_mag * width}
-        height={150}
+        height={canvas_bottom_mag * width}
         style={{
           border: '2px solid #000',
           marginTop: 10,
