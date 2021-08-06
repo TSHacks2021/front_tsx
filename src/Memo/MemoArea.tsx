@@ -83,7 +83,7 @@ const MemoArea = (props: MemoAreaProps) => {
     };
     
     const sendMessage = (presentername: string, sendmessage: string) => {
-        var message = {"messagetype":"message", "presentername": presentername, "message": sendmessage};
+        var message = {"messagetype":"memo", "presentername": presentername, "message": sendmessage};
         //var message = {"messagetype":"memo", "message": sendmessage};
         //var message = {"messagetype":"message"};
         var mes_json = JSON.stringify(message);

@@ -34,8 +34,8 @@ const ChatArea = (props:ChatAreaProps) => {
         const newChats = chats;
         //var addchat = newname + ': '+newchat;
         //newChats.push(addchat)
-        newChats.push(message)
-        setChats(newChats)
+        //newChats.push(message)
+        //setChats(newChats)
 
         //レンダリングしたい場所でこれを差し込むだけ
         setUpdata(update?false:true)
