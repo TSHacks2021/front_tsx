@@ -1,0 +1,19 @@
+.flex{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  
+  justify-content: center;
+}
+
+.button {
+  min-width: 64px;
+  line-height: 32px;
+  border-radius: 4px;
+  border: none;
+  padding: 0 16px;
+  color: #fff;
+  background: rgb(101, 223, 121);
+}

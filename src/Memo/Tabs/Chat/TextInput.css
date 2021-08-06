@@ -1,0 +1,18 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.wrap .text {
+    width: 60%;
+}
+
+.wrap .text-name {
+    width: 10%;
+}
+
+.wrap button {
+    margin-top: 24px;
+    margin-right: 0;
+    width: 10%;
+}

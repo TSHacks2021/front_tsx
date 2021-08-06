@@ -1,7 +1,21 @@
 import { render } from '@testing-library/react';
+import { time } from 'console';
 import * as React from 'react';
 
-function Time() {
+import DisplayTime from './DisplayTime';
+import SettingModal from './SettingModal';
+
+import TimeBar from './TimeBar';
+
+
+import { TimeInfo } from '../TimeInfo';
+
+type Props = {
+  timeInfo: TimeInfo;
+}
+
+function Time(props: Props) {
+  
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
 
@@ -21,7 +35,8 @@ function Time() {
     <div
       style={{
         textAlign: 'center',
-      }}>
+      }}
+    >
       <canvas
         id="canvas"
         ref={canvasRef}
@@ -32,6 +47,14 @@ function Time() {
           marginTop: 10,
         }}
       ></canvas>
+      <TimeBar timeInfo={props.timeInfo}/>
+      <DisplayTime 
+        timeInfo={props.timeInfo}
+      />
+      <SettingModal 
+        timeInfo={props.timeInfo}
+      />
+        
     </div>
   );
 }
