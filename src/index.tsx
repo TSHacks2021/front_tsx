@@ -21,7 +21,8 @@ function receiveMessage(e:any){
 ReactDOM.render(
   <React.StrictMode>
     <Time timeInfo={timeInfo}/>
-    <Memo timeInfo={timeInfo}/>
+    <Memo timeInfo={timeInfo}
+      socket={socket}/>
     <button onClick={()=>{
       // var message = "React!";
       var message = {messagetype:"memo", message:"React!"};
