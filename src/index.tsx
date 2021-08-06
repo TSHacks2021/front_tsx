@@ -9,7 +9,8 @@ import reportWebVitals from './reportWebVitals';
 
 const timeInfo = new TimeInfo();
 
-let ws = new WebSocket("ws://localhost:1323/ws");
+// let ws = new WebSocket("ws://localhost:1323/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 socket.on("message", receiveMessage);
 function receiveMessage(e:any){

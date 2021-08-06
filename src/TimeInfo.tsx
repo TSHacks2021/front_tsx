@@ -1,3 +1,4 @@
+import { time } from "console";
 
 type Presenter = {
   name: string;
@@ -19,7 +20,7 @@ export class TimeInfo{
     this.endTime.setHours(16);
     this.numPresenters = 5;
     this.presenters = [
-      {name:'abc', time:1500},
+      {name:'abc', time:10},
       {name:'def', time:1500},
       {name:'break', time:600},
       {name:'ghi', time:1500},
@@ -102,10 +103,10 @@ export class TimeInfo{
   }
 
   toNextPresenter(prevTime: number){
-    if(this.nowPresenterIndex > 0){
+    if(this.nowPresenterIndex >= 0){
       this.presenters[this.nowPresenterIndex]['time'] = prevTime; //実際に発表にかかった時間に更新
     }
-    
+
     this.nowPresenterIndex += 1;
     return this.presenters[this.nowPresenterIndex]['time'];
   }
@@ -121,19 +122,18 @@ export class TimeInfo{
     }
   }
 
-  getRemainPresentTime(){
+  getNowPresentDate(){
     // 今の発表者の終わり時間を計算
     var sec = 0;
-    for(var i=0; i<this.nowPresenterIndex+1; i++){
+    for(var i=0; i<this.nowPresenterIndex; i++){
       sec += this.presenters[i]['time'];
     }
-    const nowPresenterEndTime = new Date();
-    nowPresenterEndTime.setSeconds(this.startTime.getSeconds() + sec);
+    const nowPresenterStartDate = new Date();
+    nowPresenterStartDate.setSeconds(this.startTime.getSeconds() + sec);
+    const nowPresenterEndDate = new Date();
+    nowPresenterEndDate.setSeconds(this.startTime.getSeconds() + sec + this.presenters[this.nowPresenterIndex]['time']);
 
-    // 現在時刻を引いて残り時間を計算
-    const now = new Date();
-    const remainTime = (now.getTime() - nowPresenterEndTime.getTime()) / 1000;
-    return remainTime;
+    return [nowPresenterStartDate, nowPresenterEndDate];
   }
 
   getBreakTime(){
@@ -144,6 +144,53 @@ export class TimeInfo{
     this.breakTime = num;
     for(const presenter of this.presenters){
       if(presenter['name'] === 'break') presenter['time'] = num * 60;
+    }
+  }
+
+  getPresenterList(){
+    var presenterlist = [];
+    for (const presenter of this.presenters){
+      presenterlist.push(presenter['name']);
+    }
+    return presenterlist;
+  }
+
+  setPresenterList(presenterlist: string[]){
+    for (var i=0; i < this.presenters.length; i++){
+      this.presenters[i]['name'] = presenterlist[i];
+    }
+  }
+
+  getTimeSetting(){
+    var timesetting = [];
+    for (const presenter of this.presenters){
+      timesetting.push(presenter['time']);
+    }
+    return timesetting;
+  }
+
+  setTimeSetting(timesetting: number[]){
+    for (var i=0; i < this.presenters.length; i++){
+      this.presenters[i]['time'] = timesetting[i];
+    }
+  }
+
+  sendTimeInfo(){
+    const message = {
+      messagetype: "setting",
+      presenterlist: this.getPresenterList(),
+      starttime: this.startTime,
+      endtime: this.endTime,
+      presenttime: this.presentTime,
+      breaktime: this.breakTime,
+    }
+  }
+
+  sendChangePresenter(){
+    const message = {
+      messagetype: "",
+      nextpresenter: this.nowPresenterIndex,
+      timesetting: this.getTimeSetting(),
     }
   }
 
