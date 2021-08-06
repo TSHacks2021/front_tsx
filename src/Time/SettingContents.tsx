@@ -169,7 +169,7 @@ function SettingContents(props: Props) {
         <p>休憩時間</p>
         <input type="number" value={breakTime} onChange={handleBreakTime}></input>
       </div>
-      {/* <button>決定</button> */}
+      
       
     </div>
   );

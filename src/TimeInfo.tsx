@@ -107,11 +107,13 @@ export class TimeInfo{
 
   toNextPresenter(prevTime: number){
     if(this.nowPresenterIndex >= 0){
-      this.presenters[this.nowPresenterIndex]['time'] = prevTime; //実際に発表にかかった時間に更新
+      //実際に発表にかかった時間に更新
+      var presenters_copy = this.presenters.slice();
+      presenters_copy[this.nowPresenterIndex]['time'] = prevTime; 
+      this.presenters = presenters_copy;
     }
 
     this.nowPresenterIndex += 1;
-    // return this.presenters[this.nowPresenterIndex]['time'];
     return this.getNowPresentDate();
   }
 
@@ -121,9 +123,11 @@ export class TimeInfo{
 
   setPresentTime(num: number){
     this.presentTime = num;
-    for(const presenter of this.presenters){
-      if(presenter['name'] !== 'break') presenter['time'] = num * 60;
+    var presenters_copy = this.presenters.slice();
+    for(var i=0; i<this.numPresenters; i++){
+      if(presenters_copy[i]['name'] !== 'break' && i >= this.nowPresenterIndex) presenters_copy[i]['time'] = num * 60;
     }
+    this.presenters = presenters_copy;
   }
 
   getNowPresentDate(){
@@ -146,9 +150,11 @@ export class TimeInfo{
 
   setBreakTime(num: number){
     this.breakTime = num;
-    for(const presenter of this.presenters){
-      if(presenter['name'] === 'break') presenter['time'] = num * 60;
+    var presenters_copy = this.presenters.slice();
+    for(var i=0; i<this.numPresenters; i++){
+      if(presenters_copy[i]['name'] === 'break' && i >= this.nowPresenterIndex) presenters_copy[i]['time'] = num * 60;
     }
+    this.presenters = presenters_copy;
   }
 
   getPresenterList(){
