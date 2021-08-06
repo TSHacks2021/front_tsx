@@ -52,6 +52,7 @@ function Memo(props: MemoProps) {
             <MemoArea
               presenters={presenters}
               presenterNum={presenters.length}
+              timeInfo={props.timeInfo}
               socket={props.socket}/>
             {/*<PrivateMemo/>*/}
           </div>
