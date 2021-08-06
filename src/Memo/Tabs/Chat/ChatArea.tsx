@@ -41,6 +41,7 @@ const ChatArea = (props:ChatAreaProps) => {
         //レンダリングしたい場所でこれを差し込むだけ
         setUpdata(update?false:true)
         console.log(props.chats)
+        props.onSendButtonClick(newchat);
     }
 
     return(
