@@ -14,6 +14,7 @@ export class TimeInfo{
   public numPresenters: number = 1;
   public presenters: Presenter[] = new Array(this.numPresenters);
   public breakTime = {interbal: 1, time: 0};
+  public chatMessage = {to:"-1", sender:"",message:""};
 
   constructor(){
     this.startTime.setHours(14);
@@ -71,6 +72,14 @@ export class TimeInfo{
 
   setBreakTime(){
 
+  }
+
+  getChatMessage() {
+    return this.chatMessage;
+  }
+
+  setChatMessage(message: any) {
+    this.chatMessage = message
   }
 
 }
