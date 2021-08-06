@@ -12,11 +12,12 @@ const vertical_bar_y_mag = 0.02;
 const nowtime_bar_y_mag = 0.015;
 var time:Date;
 const bar_y_position_mag = 0.045;
-const timetext_y_mag = 0.040;
+const timetext_y_mag = 0.048;
 const nametext_y_mag = 0.015;
-const nowtimetext_y_position = 110;
+const nowtimetext_y_position_mag = 0.032;
 const font_size_little_mag = 0.0162;
 const font_size_big_mag = 0.0195;
+const font_size_min_mag = 0.013;
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
 var checksetStartTime:any = null;
 var checksetEndTime:any = null;
@@ -89,6 +90,7 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
   var nowtime_bar_x_diff = nowtime_bar_x_diff_mag * width;
   var font_little = String(font_size_little_mag * width) + 'px serif';
   var font_big = String(font_size_big_mag * width) + 'px serif';
+  var font_min = String(font_size_min_mag * width) + 'px serif';
   var bar_y_position = bar_y_position_mag * width;
   time = new Date();
   if (context) {
@@ -163,8 +165,8 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
     context.moveTo(nowtimeposition - nowtime_bar_x_diff, bar_y_position + (nowtime_bar_y_mag * width));
     context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
-    context.font = '20px serif';
-    context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
+    context.font = font_min;
+    context.fillText(timestr, nowtimeposition, bar_y_position + (nowtimetext_y_position_mag * width));
   }
 }
 
