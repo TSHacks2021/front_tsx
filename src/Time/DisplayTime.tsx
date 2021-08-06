@@ -75,6 +75,8 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     setEndDate(new Date());
     endDate.setSeconds(startDate.getSeconds() + presentTime);
     restart(endDate as unknown as number);
+
+
   }
 
 

@@ -102,8 +102,10 @@ export class TimeInfo{
   }
 
   toNextPresenter(prevTime: number){
-    this.presenters[this.nowPresenterIndex]['time'] = prevTime; //実際に発表にかかった時間に更新
-
+    if(this.nowPresenterIndex > 0){
+      this.presenters[this.nowPresenterIndex]['time'] = prevTime; //実際に発表にかかった時間に更新
+    }
+    
     this.nowPresenterIndex += 1;
     return this.presenters[this.nowPresenterIndex]['time'];
   }
@@ -117,6 +119,21 @@ export class TimeInfo{
     for(const presenter of this.presenters){
       if(presenter['name'] !== 'break') presenter['time'] = num * 60;
     }
+  }
+
+  getRemainPresentTime(){
+    // 今の発表者の終わり時間を計算
+    var sec = 0;
+    for(var i=0; i<this.nowPresenterIndex+1; i++){
+      sec += this.presenters[i]['time'];
+    }
+    const nowPresenterEndTime = new Date();
+    nowPresenterEndTime.setSeconds(this.startTime.getSeconds() + sec);
+
+    // 現在時刻を引いて残り時間を計算
+    const now = new Date();
+    const remainTime = (now.getTime() - nowPresenterEndTime.getTime()) / 1000;
+    return remainTime;
   }
 
   getBreakTime(){
