@@ -31,7 +31,8 @@ type TextInputProps = {
 const TextInput = (props:TextInputProps) => {  
     const handleSendButtonClick = (e: any) => {
         var chatfield =document.getElementById('standard-text') as HTMLInputElement;
-        props.onButtonClick(e)
+        var namefield =document.getElementById('name-text') as HTMLInputElement;
+        props.onButtonClick(namefield.value+': '+chatfield.value)
         console.log(chatfield)
         if (chatfield != null) {
             chatfield.value="";
