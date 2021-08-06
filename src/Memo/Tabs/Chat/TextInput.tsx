@@ -37,7 +37,7 @@ const TextInput = (props:TextInputProps) => {
         if (chatfield != null) {
             chatfield.value="";
         }
-        }
+    }
 
     const handleChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onChatChange(e.target.value);
