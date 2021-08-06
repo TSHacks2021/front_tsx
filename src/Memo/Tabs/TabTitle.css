@@ -1,6 +1,8 @@
-button {
+
+button.notSelected {
     text-decoration: none;
-    font-weight: bold;
+    
+
     width: 100%;
     height: 50px;
     background-color: grey;
@@ -9,4 +11,14 @@ button {
 
 button:hover{
     opacity: 0.75
+
+}
+
+button.selected {
+    text-decoration: none;
+    font-weight: bold;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    border:1px solid grey;
 }

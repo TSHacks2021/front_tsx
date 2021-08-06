@@ -6,6 +6,24 @@ import Memo from './Memo/Memo';
 import { TimeInfo } from './TimeInfo';
 import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
+import MemoArea from './Memo/MemoArea';
+
+const timeInfo = new TimeInfo();
+
+// let ws = new WebSocket("ws://localhost:1323/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+let socket = new Socket(ws);
+socket.on("message", receiveMessage);
+function receiveMessage(e:any){
+  let message = JSON.parse(e.data);
+  console.log(message);
+  if(message["messagetype"] == "memo") {
+    timeInfo.setChatMessage(message);
+  }
+
+  if (message.messagetype == "setting") timeInfo.receiveTimeInfo(message);
+  if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
+}
 
 
 // let ws = new WebSocket("ws://localhost:1323/ws");
@@ -24,7 +42,10 @@ function receiveMessage(e:any){
 ReactDOM.render(
   <React.StrictMode>
     <Time timeInfo={timeInfo}/>
-    <Memo timeInfo={timeInfo}/>
+
+    <Memo timeInfo={timeInfo}
+      socket={socket}/>
+
     <button onClick={()=>{
       // var message = "React!";
       var message = {messagetype:"memo", message:"React!"};

@@ -20,6 +20,9 @@ import TextInput from "./TextInput";
 }*/
 type ChatAreaProps = {
     chats: string[];
+
+    onSendButtonClick: (chat: string) => void;
+
 }
 
 const ChatArea = (props:ChatAreaProps) => {
@@ -27,20 +30,21 @@ const ChatArea = (props:ChatAreaProps) => {
     const[chats, setChats] = useState(props.chats);
     //boolean型のstateを作成
     const [update,setUpdata]=useState<boolean>(false)
-    let newchat: string;
-    const handleChatChange = (chat: string) => {
-        newchat = chat
-        //console.log(newchat)
-    }
 
-    const handleButtonClick = () => {
-        const newChats = chats
-        newChats.push(newchat)
-        setChats(newChats)
+    var newchat: string;
+
+    const handleButtonClick = (message: string) => {
+        const newChats = chats;
+        //var addchat = newname + ': '+newchat;
+        //newChats.push(addchat)
+        //newChats.push(message)
+        //setChats(newChats)
 
         //レンダリングしたい場所でこれを差し込むだけ
-        setUpdata(update?false:true)
+        //setUpdata(update?false:true)
         console.log(props.chats)
+        props.onSendButtonClick(message);
+
     }
 
     return(
@@ -50,7 +54,7 @@ const ChatArea = (props:ChatAreaProps) => {
                     chats = {chats}
                     />
                 <TextInput
-                    onChatChange={handleChatChange}
+
                     onButtonClick={handleButtonClick}/>
             </div>
         </React.Fragment>

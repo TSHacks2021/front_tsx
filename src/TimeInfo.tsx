@@ -1,4 +1,6 @@
+
 import Socket from './WebSocket';
+
 
 type Presenter = {
   name: string;
@@ -7,6 +9,7 @@ type Presenter = {
 
 export class TimeInfo{
 
+
   private startTime: Date = new Date();
   private endTime: Date  = new Date();
   private numPresenters: number = 1;
@@ -14,6 +17,8 @@ export class TimeInfo{
   private nowPresenterIndex = -1;
   private presentTime = 0;
   private breakTime = 0;
+  private chatMessage = {to:"-1", sender:"",message:""};
+
   private socket: Socket;
 
   constructor(socket: Socket){
@@ -26,7 +31,7 @@ export class TimeInfo{
       {name:'break', time:600},
       {name:'ghi', time:1500},
       {name:'jkl', time:1500}];
-    
+
     this.socket = socket;
   }
 
@@ -105,6 +110,12 @@ export class TimeInfo{
     return this.nowPresenterIndex;
   }
 
+
+  setNowPresenterIndex(nowPresenterIndex: number){
+    this.nowPresenterIndex = nowPresenterIndex;
+  }
+
+
   toNextPresenter(prevTime: number){
     if(this.nowPresenterIndex >= 0){
       //実際に発表にかかった時間に更新
@@ -132,6 +143,7 @@ export class TimeInfo{
 
   getNowPresentDate(){
     // 今の発表者の開始時刻と終了予定時刻，発表時間を返す
+
     var sec = 0;
     for(var i=0; i<this.nowPresenterIndex; i++){
       sec += this.presenters[i]['time'];
@@ -140,6 +152,7 @@ export class TimeInfo{
     nowPresenterStartDate.setSeconds(this.startTime.getSeconds() + sec);
     const nowPresenterEndDate = new Date();
     nowPresenterEndDate.setSeconds(nowPresenterStartDate.getSeconds() + this.presenters[this.nowPresenterIndex]['time']);
+
 
     return [nowPresenterStartDate, nowPresenterEndDate];
   }
@@ -166,9 +179,13 @@ export class TimeInfo{
   }
 
   setPresenterList(presenterlist: string[]){
-    for (var i=0; i < this.presenters.length; i++){
-      this.presenters[i]['name'] = presenterlist[i];
+
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    for (var i=0; i < presenters.length; i++){
+      presenters[i]['name'] = presenterlist[i];
     }
+    this.presenters = presenters;
+
   }
 
   getTimeSetting(){
@@ -180,9 +197,12 @@ export class TimeInfo{
   }
 
   setTimeSetting(timesetting: number[]){
-    for (var i=0; i < this.presenters.length; i++){
-      this.presenters[i]['time'] = timesetting[i];
+
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    for (var i=0; i < presenters.length; i++){
+      presenters[i]['time'] = timesetting[i];
     }
+    this.presenters = presenters;
   }
 
 
@@ -198,25 +218,39 @@ export class TimeInfo{
 
     const mes_json = JSON.stringify(message);
     this.socket.emit(mes_json);
+
   }
 
   sendChangePresenter(){
     const message = {
-      messagetype: "",
+      messagetype: "changepresenter",
       nextpresenter: this.nowPresenterIndex,
       timesetting: this.getTimeSetting(),
     }
-
+        
     const mes_json = JSON.stringify(message);
     this.socket.emit(mes_json);
   }
 
-  recieveTimeInfo(){
-
+  receiveTimeInfo(message:any){
+    this.setPresenterList(message.presenterlist);
+    this.setStartTime(message.starttime);
+    this.setEndTime(message.endtime);
+    this.setPresentTime(message.presenttime);
+    this.setBreakTime(message.breaktime);
   }
 
-  recieveChangePresenter(){
+  getChatMessage() {
+    return this.chatMessage;
+  }
 
+  setChatMessage(message: any) {
+    this.chatMessage = message
+  }
+
+  receiveChangePresenter(message:any){
+    this.setNowPresenterIndex(message.nextpresenter);
+    this.setTimeSetting(message.timesetting);
   }
 
 }
