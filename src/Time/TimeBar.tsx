@@ -2,33 +2,36 @@ import * as React from 'react';
 import { TimeInfo } from "../TimeInfo";
 import { useWindowDimensions } from "../WindowDimensions";
 
-const beginposition = 40;
-const endposition = 920;
+const canvas_left_mag = 0.182;
+const canvas_right_mag = 0.625;
+const startposition_mag = 0.026;
+const endposition_mag = 0.599;
+const nowtime_bar_x_diff_mag = 0.013;
 const vertical_bar_y_begin = 30;
 const vertical_bar_y_end = 110;
 const nowtime_bar_y_begin = 50;
 const nowtime_bar_y_end = 90;
-const nowtime_bar_x_diff = 20;
 var time:Date;
 const bar_y_position = 70;
 const timetext_y_position = 140;
 const nametext_y_position = 45;
 const nowtimetext_y_position = 110;
+const font_size_little_mag = 0.0162;
+const font_size_big_mag = 0.0195;
 const colors:string[] = ['red', 'blue', 'black', 'green', 'orange'];
 var checksetStartTime:any = null;
 var checksetEndTime:any = null;
 var checksetPresenters:any = null;
 var checkdraw:any = null;
-var checksetWindowDimensions:any = null;
 
 type Props = {
   timeInfo: TimeInfo;
 }
 
-function calcBarPosition(starttime:number, endtime:number, times:number[]) {
+function calcBarPosition(starttime:number, endtime:number, times:number[], startposition:number, endposition:number) {
   var barposition:number[] = new Array(times.length - 1);
   var timelength = endtime - starttime;
-  var barlength = endposition - beginposition;
+  var barlength = endposition - startposition;
   var sum;
 
   for (var i = 0; i < times.length - 1; i++) {
@@ -36,18 +39,18 @@ function calcBarPosition(starttime:number, endtime:number, times:number[]) {
     for (var j = 0; j <= i; j++) {
       sum += times[j];
     }
-    barposition[i] = beginposition + (barlength * (sum / timelength));
+    barposition[i] = startposition + (barlength * (sum / timelength));
   }
 
   return barposition;
 }
 
-function calcNowtimePosition(timestr:string, starttime:number, endtime:number) {
+function calcNowtimePosition(timestr:string, starttime:number, endtime:number, startposition:number, endposition:number) {
   var timelength = endtime - starttime;
-  var barlength = endposition - beginposition;
+  var barlength = endposition - startposition;
   var second = hourminsecTosec(timestr);
 
-  return (beginposition + (barlength * ((second - starttime) / timelength)));
+  return (startposition + (barlength * ((second - starttime) / timelength)));
 }
 
 function secTohourmin(seconds:number) {
@@ -82,31 +85,36 @@ function hourminsecTosec(time:string) {
 }
 
 function draw(context:any, canvasRef:any, width:number, height:number, starttime:number, endtime:number, names:string[], times:number[]) {
+  var startposition = startposition_mag * width;
+  var endposition = endposition_mag * width;
+  var nowtime_bar_x_diff = nowtime_bar_x_diff_mag * width;
+  var font_little = String(font_size_little_mag * width) + 'px serif';
+  var font_big = String(font_size_big_mag * width) + 'px serif';
   time = new Date();
   if (context) {
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    var barposition = calcBarPosition(starttime, endtime, times);
+    var barposition = calcBarPosition(starttime, endtime, times, startposition, endposition);
     context.globalAlpha = 1.0
     context.strokeStyle = 'black';
     context.textAlign = 'center';
     // begin time
     context.beginPath();
-    context.moveTo(beginposition, vertical_bar_y_begin);
-    context.lineTo(beginposition, vertical_bar_y_end);
+    context.moveTo(startposition, vertical_bar_y_begin);
+    context.lineTo(startposition, vertical_bar_y_end);
     context.stroke();
-    context.font = '25px serif';
-    context.fillText(names[0], (beginposition + barposition[0]) / 2, nametext_y_position)
-    context.font = '30px serif';
-    context.fillText(secTohourmin(starttime), beginposition, timetext_y_position)
+    context.font = font_little;
+    context.fillText(names[0], (startposition + barposition[0]) / 2, nametext_y_position)
+    context.font = font_big;
+    context.fillText(secTohourmin(starttime), startposition, timetext_y_position)
   
     // end time
     context.beginPath();
     context.moveTo(endposition, vertical_bar_y_begin);
     context.lineTo(endposition, vertical_bar_y_end);
     context.stroke();
-    context.font = '25px serif';
+    context.font = font_little;
     context.fillText(names[names.length - 1], (barposition[barposition.length - 1] + endposition) / 2, nametext_y_position)
-    context.font = '30px serif';
+    context.font = font_big;
     context.fillText(secTohourmin(endtime), endposition, timetext_y_position)
   
     // change time
@@ -119,7 +127,7 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
       context.strokeStyle = colors[i];
       context.beginPath();
       if (i == 0) {
-        context.moveTo(beginposition, bar_y_position);
+        context.moveTo(startposition, bar_y_position);
       }
       else {
         context.moveTo(barposition[i - 1], bar_y_position);
@@ -135,17 +143,17 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
         var sum = 0;
         for (var j = 0; j <= i; j++) sum += times[j];
         if (i > 0) {
-          context.font = '25px serif';
+          context.font = font_little;
           context.fillText(names[i], (barposition[i - 1] + barposition[i]) / 2, nametext_y_position)
         }
-        context.font = '30px serif';
+        context.font = font_big;
         context.fillText(secTohourmin(starttime + sum), barposition[i], timetext_y_position)
       }
     }
   
     // now time
     var timestr = time.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-    var nowtimeposition = calcNowtimePosition(timestr, starttime, endtime);
+    var nowtimeposition = calcNowtimePosition(timestr, starttime, endtime, startposition, endposition);
     context.strokeStyle = 'black';
     context.beginPath();
     context.moveTo(nowtimeposition - nowtime_bar_x_diff, nowtime_bar_y_begin);
@@ -156,9 +164,7 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
     context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.font = '20px serif';
-    //context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
-    context.fillText(String(width), nowtimeposition, nowtimetext_y_position);
-    context.fillText(String(height), nowtimeposition, nowtimetext_y_position + 15);
+    context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
   }
 }
 
@@ -168,13 +174,13 @@ function TimeBar(props: Props) {
   const [startTime, setStartTime] = React.useState(props.timeInfo.getStartTime());
   const [endTime, setEndTime] = React.useState(props.timeInfo.getEndTime());
   const [presenters, setPresenters] = React.useState(props.timeInfo.getPresenters());
-  const [windowdimensions, setWindowDimensions] = React.useState(useWindowDimensions());
+  const windowdimensions = useWindowDimensions();
   var starttime:number;
   var endtime:number;
   var names:string[] = [];
   var times:number[] = [];
-  var width:number;
-  var height:number;
+  var width:number = windowdimensions.width;
+  var height:number = windowdimensions.height;
 
   if (checksetStartTime) clearInterval(checksetStartTime);
   checksetStartTime = setInterval(function(){setStartTime(props.timeInfo.getStartTime())}, 100);
@@ -187,11 +193,6 @@ function TimeBar(props: Props) {
   if (checksetPresenters) clearInterval(checksetPresenters);
   checksetPresenters = setInterval(function(){setPresenters(props.timeInfo.getPresenters())}, 100);
 
-  if (checksetWindowDimensions) clearInterval(checksetWindowDimensions);
-  checksetWindowDimensions = setInterval(function(){setWindowDimensions(useWindowDimensions())}, 100);
-  width = windowdimensions.width;
-  height = windowdimensions.height;
-
   for (var i = 0; i < presenters.length; i++) {
     names.push(presenters[i].name);
     times.push(presenters[i].time);
@@ -200,7 +201,7 @@ function TimeBar(props: Props) {
   React.useEffect(() => {
     if (canvasRef.current) {
       canvasRef.current.style.position = 'absolute';
-      canvasRef.current.style.left = '280px';
+      canvasRef.current.style.left = String(canvas_left_mag * width) + 'px';
       canvasRef.current.style.top = '10px';
       if (checkdraw) clearInterval(checkdraw);
       checkdraw = setInterval(function(){draw(context, canvasRef, width, height, starttime, endtime, names, times)}, 10);
@@ -221,7 +222,7 @@ function TimeBar(props: Props) {
       <canvas
         id="canvas"
         ref={canvasRef}
-        width={960}
+        width={canvas_right_mag * width}
         height={150}
         style={{
           border: '2px solid #000',
