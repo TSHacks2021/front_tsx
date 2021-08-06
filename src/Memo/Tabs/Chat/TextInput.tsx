@@ -53,6 +53,13 @@ const TextInput = (props:TextInputProps) => {
         <React.Fragment>
             <form className="wrap" noValidate autoComplete="off" onSubmit={e => handleSubmit(e)}>
                 <TextField
+                    id = "name-text"
+                    label="名前"
+                    className="text-name"
+                    margin="normal"
+                    //onChange={handleNameChange}
+                />
+                <TextField
                     id = "standard-text"
                     label="メッセージを入力"
                     className="text"
