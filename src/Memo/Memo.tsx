@@ -31,11 +31,11 @@ function Memo(props: MemoProps) {
     }
   }
 
-  const presenter = props.timeInfo.getPresenters()
-  const presenterNum = props.timeInfo.getNumPresenters()
-  var presenters:string[] = new Array(presenterNum)
+  // const presenter = props.timeInfo.getPresenters()
+  // const presenterNum = props.timeInfo.getNumPresenters()
+  var presenters:string[] = new Array(0)
 
-  for(var i = 0; i < presenterNum; i++) {
+  for(var i = 0; i < presenter.length; i++) {
     presenters[i] = presenter[i].name
   }
 

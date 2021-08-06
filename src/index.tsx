@@ -8,11 +8,13 @@ import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
 import MemoArea from './Memo/MemoArea';
 
-const timeInfo = new TimeInfo();
 
-// let ws = new WebSocket("ws://localhost:1323/ws");
-let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+let ws = new WebSocket("ws://localhost:63494/ws");
+// let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
+
+const timeInfo = new TimeInfo(socket);
+
 socket.on("message", receiveMessage);
 function receiveMessage(e:any){
   let message = JSON.parse(e.data);
@@ -25,19 +27,6 @@ function receiveMessage(e:any){
   if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
 }
 
-
-// let ws = new WebSocket("ws://localhost:1323/ws");
-let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
-let socket = new Socket(ws);
-
-const timeInfo = new TimeInfo(socket);
-
-socket.on("message", receiveMessage);
-function receiveMessage(e:any){
-  let message = JSON.parse(e.data);
-  console.log(message);
-  
-}
 
 ReactDOM.render(
   <React.StrictMode>
