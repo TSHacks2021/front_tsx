@@ -40,16 +40,25 @@ const TextInput = (props:TextInputProps) => {
         props.onChatChange(e.target.value);
         //console.log(e.target.value)
     }
+    
+    //enterを押したときに勝手にリフレッシュされるのを防止
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+    }
 
     return(
         <React.Fragment>
-            <form className="wrap" noValidate autoComplete="off">
+            <form className="wrap" noValidate autoComplete="off" onSubmit={e => handleSubmit(e)}>
                 <TextField
                     id = "standard-text"
                     label="メッセージを入力"
                     className="text"
                     margin="normal"
                     onChange={handleChatChange}
+                    onKeyPress={e => {
+                        if (e.key == 'Enter') {
+                            handleSendButtonClick(e);
+                        }}}
                 />
                 <SendButton 
                     onSendButtonClick={(e) => handleSendButtonClick(e)}/>
