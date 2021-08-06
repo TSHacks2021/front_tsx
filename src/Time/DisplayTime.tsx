@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./DisplayTime.css"
 import { useTimer } from "react-timer-hook"; //npm install react-timer-hook が必要
 import { TimeInfo } from "../TimeInfo";
@@ -39,15 +39,18 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     onExpire: () => console.warn("onExpire called"),
   });
 
-  var presentTime: number;
-  var startDate: Date;
-  var endDate: Date;
+  // var presentTime: number;
+  // var startDate: Date;
+  // var endDate: Date;
+  const [presentTime, setPresentTime] = useState(10);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(()=>{
     // タイマーをセットする部分
-    presentTime = 10;
-    startDate = new Date();
-    endDate = new Date();
+    setPresentTime(10);
+    setStartDate(new Date());
+    setEndDate(new Date());
     endDate.setSeconds(startDate.getSeconds() + presentTime);
     restart(endDate as unknown as number);
   }, [])
@@ -59,17 +62,17 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     const remain = hours*3600 + minutes*60 + seconds;
     if(remain > 0){
       // 早く終わったとき
-      presentTime = presentTime - remain;
+      setPresentTime(presentTime - remain);
     }else{
       // 時間オーバーしたとき
       const now = new Date();
-      presentTime = (now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds()) - (startDate.getHours()*3600 + startDate.getMinutes()*60 + startDate.getSeconds())
+      setPresentTime((now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds()) - (startDate.getHours()*3600 + startDate.getMinutes()*60 + startDate.getSeconds()))
     }
 
     // タイマーをセットする部分
-    presentTime = props.timeInfo.toNextPresenter(presentTime);
-    startDate = new Date();
-    endDate = new Date();
+    setPresentTime(props.timeInfo.toNextPresenter(presentTime));
+    setStartDate(new Date());
+    setEndDate(new Date());
     endDate.setSeconds(startDate.getSeconds() + presentTime);
     restart(endDate as unknown as number);
   }
@@ -80,7 +83,7 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
       <div style={{ fontSize: "500%" }}>
         <span>{( '00' + minutes ).slice( -2 )}</span>:<span>{( '00' + seconds ).slice( -2 )}</span>
       </div>
-      <button className="button" onClick={()=>handleClick}>  切替  </button>
+      <button className="button" onClick={handleClick}>  切替  </button>
     </div>
   );  
 
