@@ -7,6 +7,7 @@ import ChatArea from "./Tabs/Chat/ChatArea";
 type PresenterTabProps = {
     presenter: TodayPresenter;
     onMemoChange: (id: number, memo: string) => void;
+    onSendButtonClick: (presenterName:string, message: string) => void;
 };
 
 const PresenterTab = (props:PresenterTabProps) => {
@@ -14,6 +15,10 @@ const PresenterTab = (props:PresenterTabProps) => {
 
     const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onMemoChange(props.presenter.id, e.target.value);
+    };
+
+    const handleSendButtonClick = (message: string) => {
+        props.onSendButtonClick(props.presenter.name, message);
     };
 
     return(
@@ -24,6 +29,7 @@ const PresenterTab = (props:PresenterTabProps) => {
                     <textarea
                         //type="text"
                         className="memo"
+                        placeholder="プライベートメモ"
                         value={memo}
                         onChange={handleMemoChange}
                     />
@@ -31,6 +37,7 @@ const PresenterTab = (props:PresenterTabProps) => {
                 <div className="field">
                     <ChatArea
                         chats={chats}/*value={chats}*/
+                        onSendButtonClick={handleSendButtonClick}
                     />
                 </div>
                 </div>
