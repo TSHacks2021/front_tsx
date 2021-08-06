@@ -6,6 +6,8 @@ import { TodayPresenter } from "./TodayPresenter";
 import PresenterTab from "./PresenterTab"
 
 import {TimeInfo} from "../TimeInfo";
+import Socket from '../WebSocket'
+
 //function SampleMemo() {
 
 const dummyPresenters: TodayPresenter[] = [
@@ -38,13 +40,14 @@ const dummyPresenters: TodayPresenter[] = [
 type MemoAreaProps = {
     presenters: string[];
     presenterNum: number;
+    socket: Socket;
 }
 
 const MemoArea = (props: MemoAreaProps) => {
     //const[presenters, setPresenters] = useState(dummyPresenters);
     var dummypresenters: TodayPresenter[] = new Array(props.presenterNum)
     for(var i = 0; i < props.presenterNum;i++) {
-        dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[""]}
+        dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[]}
     }
     const[presenters, setPresenters] = useState(dummypresenters)
     
@@ -57,12 +60,25 @@ const MemoArea = (props: MemoAreaProps) => {
         setPresenters(newPresenters);
     };
 
+    const handleSendButtonClick = (presentername: string, sendmessage: string) => {
+        //送信の処理ができればここでする？
+        sendMessage(presentername, sendmessage)        
+    };
+    
+    const sendMessage = (presentername: string, sendmessage: string) => {
+        var message = {messagetype:"memo", presentername:presentername, message:sendmessage};
+        var mes_json = JSON.stringify(message);
+        console.log(mes_json);
+        props.socket.emit(mes_json);
+    }
+
     const presenterTabs = presenters.map((p) => {
         return(
             <PresenterTab
                 presenter={p}
                 key={p.id}
                 onMemoChange={(id, memo) => handleMemoChange(id, memo)}
+                onSendButtonClick={handleSendButtonClick}
                 //onMemoChange={(id, memo) => {}}
             />
         );
