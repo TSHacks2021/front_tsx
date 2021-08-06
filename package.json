@@ -17,9 +17,9 @@
     "react-scripts": "4.0.3",
     "react-timer-hook": "^3.0.4",
     "typescript": "^4.3.5",
-    "web-vitals": "^1.1.2",
-  "homepage": "https://tshacks2021.github.io/front_tsx/"
+    "web-vitals": "^1.1.2"
   },
+  "homepage": "https://tshacks2021.github.io/front_tsx/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
