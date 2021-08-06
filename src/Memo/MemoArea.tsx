@@ -7,6 +7,7 @@ import PresenterTab from "./PresenterTab"
 
 import {TimeInfo} from "../TimeInfo";
 import Socket from '../WebSocket'
+import { receiveMessageOnPort } from "worker_threads";
 
 //function SampleMemo() {
 
@@ -46,11 +47,27 @@ type MemoAreaProps = {
 const MemoArea = (props: MemoAreaProps) => {
     //const[presenters, setPresenters] = useState(dummyPresenters);
     var dummypresenters: TodayPresenter[] = new Array(props.presenterNum)
+
     for(var i = 0; i < props.presenterNum;i++) {
         dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[]}
     }
     const[presenters, setPresenters] = useState(dummypresenters)
-    
+    props.socket.on("message", receiveMessage);
+
+    function receiveMessage(e:any){
+        let message = JSON.parse(e.data);
+        console.log(message);
+        const newPresenters = presenters.map((p) => {
+            if (p.id == 0) {
+                p.chats.push(message["message"])
+                return{...p, chats:p.chats}
+            } else {
+                return p;
+            }
+        });
+        setPresenters(newPresenters);
+    }
+
     const handleMemoChange = (id: number, memo: string) => {
         const newPresenters = presenters.map((p) => {
             return p.id === id
@@ -66,7 +83,9 @@ const MemoArea = (props: MemoAreaProps) => {
     };
     
     const sendMessage = (presentername: string, sendmessage: string) => {
-        var message = {messagetype:"memo", presentername:presentername, message:sendmessage};
+        var message = {"messagetype":"message", "presentername": presentername, "message": sendmessage};
+        //var message = {"messagetype":"memo", "message": sendmessage};
+        //var message = {"messagetype":"message"};
         var mes_json = JSON.stringify(message);
         console.log(mes_json);
         props.socket.emit(mes_json);
