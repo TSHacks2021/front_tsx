@@ -6,6 +6,7 @@ import Memo from './Memo/Memo';
 import { TimeInfo } from './TimeInfo';
 import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
+import MemoArea from './Memo/MemoArea';
 
 const timeInfo = new TimeInfo();
 
@@ -15,7 +16,10 @@ socket.on("message", receiveMessage);
 function receiveMessage(e:any){
   let message = JSON.parse(e.data);
   console.log(message);
-  
+  if(message["messagetype"] == "memo") {
+    timeInfo.setChatMessage(message);
+  }
+
 }
 
 ReactDOM.render(
