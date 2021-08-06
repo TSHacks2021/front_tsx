@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TimeInfo } from "../TimeInfo";
+import { useWindowDimensions } from "../WindowDimensions";
 
 const beginposition = 40;
 const endposition = 920;
@@ -18,6 +19,7 @@ var checksetStartTime:any = null;
 var checksetEndTime:any = null;
 var checksetPresenters:any = null;
 var checkdraw:any = null;
+var checksetWindowDimensions:any = null;
 
 type Props = {
   timeInfo: TimeInfo;
@@ -79,7 +81,7 @@ function hourminsecTosec(time:string) {
   return ((hour * 3600) + (min * 60) + second);
 }
 
-function draw(context:any, canvasRef:any, starttime:number, endtime:number, names:string[], times:number[]) {
+function draw(context:any, canvasRef:any, width:number, height:number, starttime:number, endtime:number, names:string[], times:number[]) {
   time = new Date();
   if (context) {
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -154,7 +156,9 @@ function draw(context:any, canvasRef:any, starttime:number, endtime:number, name
     context.lineTo(nowtimeposition, bar_y_position);
     context.stroke();
     context.font = '20px serif';
-    context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
+    //context.fillText(timestr, nowtimeposition, nowtimetext_y_position);
+    context.fillText(String(width), nowtimeposition, nowtimetext_y_position);
+    context.fillText(String(height), nowtimeposition, nowtimetext_y_position + 15);
   }
 }
 
@@ -164,10 +168,13 @@ function TimeBar(props: Props) {
   const [startTime, setStartTime] = React.useState(props.timeInfo.getStartTime());
   const [endTime, setEndTime] = React.useState(props.timeInfo.getEndTime());
   const [presenters, setPresenters] = React.useState(props.timeInfo.getPresenters());
+  const [windowdimensions, setWindowDimensions] = React.useState(useWindowDimensions());
   var starttime:number;
   var endtime:number;
   var names:string[] = [];
   var times:number[] = [];
+  var width:number;
+  var height:number;
 
   if (checksetStartTime) clearInterval(checksetStartTime);
   checksetStartTime = setInterval(function(){setStartTime(props.timeInfo.getStartTime())}, 100);
@@ -179,6 +186,12 @@ function TimeBar(props: Props) {
 
   if (checksetPresenters) clearInterval(checksetPresenters);
   checksetPresenters = setInterval(function(){setPresenters(props.timeInfo.getPresenters())}, 100);
+
+  if (checksetWindowDimensions) clearInterval(checksetWindowDimensions);
+  checksetWindowDimensions = setInterval(function(){setWindowDimensions(useWindowDimensions())}, 100);
+  width = windowdimensions.width;
+  height = windowdimensions.height;
+
   for (var i = 0; i < presenters.length; i++) {
     names.push(presenters[i].name);
     times.push(presenters[i].time);
@@ -190,15 +203,15 @@ function TimeBar(props: Props) {
       canvasRef.current.style.left = '280px';
       canvasRef.current.style.top = '10px';
       if (checkdraw) clearInterval(checkdraw);
-      checkdraw = setInterval(function(){draw(context, canvasRef, starttime, endtime, names, times)}, 10);
+      checkdraw = setInterval(function(){draw(context, canvasRef, width, height, starttime, endtime, names, times)}, 10);
       const renderCtx = canvasRef.current.getContext('2d');
 
       if (renderCtx) {
         setContext(renderCtx);
       }
     }
-    draw(context, canvasRef, starttime, endtime, names, times);
-  }, [context, startTime, endTime, presenters]);
+    draw(context, canvasRef, width, height, starttime, endtime, names, times);
+  }, [context, startTime, endTime, presenters, windowdimensions]);
 
   return (
     <div
