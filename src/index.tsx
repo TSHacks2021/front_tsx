@@ -7,18 +7,17 @@ import { TimeInfo } from './TimeInfo';
 import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
 
+const timeInfo = new TimeInfo();
 
 // let ws = new WebSocket("ws://localhost:1323/ws");
 let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
-
-const timeInfo = new TimeInfo(socket);
-
 socket.on("message", receiveMessage);
 function receiveMessage(e:any){
   let message = JSON.parse(e.data);
   console.log(message);
-  
+  if (message.messagetype == "setting") timeInfo.receiveTimeInfo(message);
+  if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
 }
 
 ReactDOM.render(
