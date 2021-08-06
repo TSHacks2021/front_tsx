@@ -39,11 +39,6 @@ const TextInput = (props:TextInputProps) => {
         }
     }
 
-    const handleChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChatChange(e.target.value);
-        //console.log(e.target.value)
-    }
-
     //enterを押したときに勝手にリフレッシュされるのを防止
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -57,14 +52,12 @@ const TextInput = (props:TextInputProps) => {
                     label="名前"
                     className="text-name"
                     margin="normal"
-                    //onChange={handleNameChange}
                 />
                 <TextField
                     id = "standard-text"
                     label="メッセージを入力"
                     className="text"
                     margin="normal"
-                    onChange={handleChatChange}
                     onKeyPress={e => {
                         if (e.key == 'Enter') {
                             handleSendButtonClick(e);
