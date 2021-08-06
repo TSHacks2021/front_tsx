@@ -57,7 +57,7 @@ const AlignItemsList = (props: AlignItemsListProps) => {
     //const chats = props.chats
 
     return (
-        <div style={{maxHeight: 200, overflow: 'auto'}}>
+        <div style={{height: 200, overflow: 'auto', border: '2px solid grey' }}>
             {chats.map((item, index) => (
                 <List className={classes.root}
                     key={index}>
