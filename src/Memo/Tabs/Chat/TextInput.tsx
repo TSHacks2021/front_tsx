@@ -25,8 +25,6 @@ class TextInput extends Component {
 */
 
 type TextInputProps = {
-    //chat: string;
-    onChatChange: (chat: string) => void;
     onButtonClick: (e: any) => void;
 };
 
