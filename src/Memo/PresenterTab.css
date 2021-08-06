@@ -7,7 +7,7 @@ textarea.memo {
     box-shadow: 0 0 0 1px #ccc inset;
     appearance: none;
     resize: vertical;
-    height: 90%;
+    height: 100%;
 }
 
 textarea.memo:focus {
@@ -22,7 +22,7 @@ textarea.memo:focus {
     background: #fff;
     /*border: 1px solid #666;*/
     width:90%;
-    max-height: 210px;
+    height: 200px;
 
     display: flex;
     flex-wrap: wrap;
