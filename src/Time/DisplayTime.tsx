@@ -7,6 +7,7 @@ type Props = {
   timeInfo: TimeInfo;
 }
 
+var presentersIntervalId: any = null;
 
 function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: number } ) {
 
@@ -29,17 +30,28 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
+  const [presenters, setPresenters] = useState(props.timeInfo.getPresenters());
+  if(presentersIntervalId) clearInterval(presentersIntervalId);
+  presentersIntervalId = setInterval(function(){setPresenters(props.timeInfo.getPresenters())}, 100)
+
   useEffect(()=>{
     // タイマーをセットする部分
-    endDate.setSeconds(startDate.getSeconds() + presentTime);
-    restart(endDate as unknown as number);
-  }, [])
+    // endDate.setSeconds(startDate.getSeconds() + presentTime);
+    // restart(endDate as unknown as number);
+    if(props.timeInfo.getNowPresenterIndex() >= 0){
+      update();
+    }
+    console.log("Display|useEffect");
+  }, [presenters])
 
 
   const handleClick = () =>{
     if(props.timeInfo.getNowPresenterIndex() < props.timeInfo.getNumPresenters()-1){
+      // 次の発表者がいる場合
       changePresenter();
     }
+
+    props.timeInfo.sendChangePresenter();
   }
 
   const changePresenter = () =>{
@@ -85,7 +97,7 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
         <span>{( '00' + minutes ).slice( -2 )}</span>:<span>{( '00' + seconds ).slice( -2 )}</span>
       </div>
       <button className="button" onClick={handleClick}>  切替  </button>
-      <button className="button" onClick={update}>  更新  </button>
+      {/* <button className="button" onClick={update}>  更新  </button> */}
     </div>
   );  
 

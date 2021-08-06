@@ -32,6 +32,14 @@ function SettingModal(props: Props){
         <SettingContents 
           timeInfo={props.timeInfo}
         />
+        <button
+          onClick={()=>{
+            setIsOpen(false)
+            props.timeInfo.sendTimeInfo();
+          }}  
+        >
+          送信
+        </button>
       </Modal>
     </div>
   );
