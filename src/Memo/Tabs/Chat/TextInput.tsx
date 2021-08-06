@@ -30,17 +30,21 @@ type TextInputProps = {
     onButtonClick: (e: any) => void;
 };
 
-const TextInput = (props:TextInputProps) => {
+const TextInput = (props:TextInputProps) => {  
     const handleSendButtonClick = (e: any) => {
+        var chatfield =document.getElementById('standard-text') as HTMLInputElement;
         props.onButtonClick(e)
-        //console.log(e)
+        console.log(chatfield)
+        if (chatfield != null) {
+            chatfield.value="";
+        }
     }
 
     const handleChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onChatChange(e.target.value);
         //console.log(e.target.value)
     }
-    
+
     //enterを押したときに勝手にリフレッシュされるのを防止
     const handleSubmit = (e: any) => {
         e.preventDefault();
