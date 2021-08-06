@@ -35,7 +35,8 @@ function Time(props: Props) {
     <div
       style={{
         textAlign: 'center',
-      }}>
+      }}
+    >
       <canvas
         id="canvas"
         ref={canvasRef}
@@ -48,7 +49,7 @@ function Time(props: Props) {
       ></canvas>
       <TimeBar timeInfo={props.timeInfo}/>
       <DisplayTime 
-        endTime={{seconds:0, minutes:10, hours:0}}
+        timeInfo={props.timeInfo}
       />
       <SettingModal 
         timeInfo={props.timeInfo}

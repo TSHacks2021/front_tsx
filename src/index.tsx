@@ -10,7 +10,8 @@ import MemoArea from './Memo/MemoArea';
 
 const timeInfo = new TimeInfo();
 
-let ws = new WebSocket("ws://localhost:1323/ws");
+// let ws = new WebSocket("ws://localhost:1323/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 socket.on("message", receiveMessage);
 function receiveMessage(e:any){
@@ -20,6 +21,8 @@ function receiveMessage(e:any){
     timeInfo.setChatMessage(message);
   }
 
+  if (message.messagetype == "setting") timeInfo.receiveTimeInfo(message);
+  if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
 }
 
 ReactDOM.render(

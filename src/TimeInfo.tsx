@@ -1,27 +1,28 @@
-import internal from "stream";
+import { time } from "console";
 
 type Presenter = {
   name: string;
   time: number;
 }
 
-
-
 export class TimeInfo{
 
-  public startTime: Date = new Date();
-  public endTime: Date  = new Date();
-  public numPresenters: number = 1;
-  public presenters: Presenter[] = new Array(this.numPresenters);
-  public breakTime = {interbal: 1, time: 0};
-  public chatMessage = {to:"-1", sender:"",message:""};
+  
+  private startTime: Date = new Date();
+  private endTime: Date  = new Date();
+  private numPresenters: number = 1;
+  private presenters: Presenter[] = new Array(this.numPresenters).fill({name: '', time: 0});
+  private nowPresenterIndex = -1;
+  private presentTime = 0;
+  private breakTime = 0;
+  private chatMessage = {to:"-1", sender:"",message:""};
 
   constructor(){
-    this.startTime.setHours(14);
+    this.startTime.setHours(13);
     this.endTime.setHours(16);
     this.numPresenters = 5;
     this.presenters = [
-      {name:'abc', time:1500},
+      {name:'abc', time:10},
       {name:'def', time:1500},
       {name:'break', time:600},
       {name:'ghi', time:1500},
@@ -49,11 +50,34 @@ export class TimeInfo{
   }
 
   setNumPresenters(num: number){
-    this.numPresenters = num;
+    this.numPresenters = this.presenters.length;
+    if(num >= 1){
+      if (num > this.presenters.length) {
+        for(var i=0; i<num-this.presenters.length; i++){
+          this.addPresenter(this.presenters.length, '', 0);
+        }
+      }else if(num < this.presenters.length){
+        for(var i=0; i<this.presenters.length-num; i++){
+          this.deletePresenter(this.presenters.length-1);
+        }
+      }
+    }
   }
 
   addNumPresenters(num: number){
-    this.numPresenters = this.numPresenters + num;
+    this.numPresenters = this.presenters.length;
+    if(this.numPresenters + num >= 1){
+      if (num > 0) {
+        for(var i=0; i<num; i++){
+          this.addPresenter(this.presenters.length, '', 0);
+        }
+      }else if(num < 0){
+        for(var i=0; i<-num; i++){
+          this.deletePresenter(this.presenters.length-1);
+        }
+      }
+    }
+
     this.endTime.setSeconds(this.endTime.getSeconds() + 60);
     this.endTime = new Date(this.endTime);
   }
@@ -62,16 +86,134 @@ export class TimeInfo{
     return this.presenters;
   }
 
-  setPresenters(){
+  setPresenters(presenters: Presenter[]){
+    this.presenters = presenters;
+  }
 
+  deletePresenter(idx: number){
+    this.presenters = this.presenters.slice(0, idx).concat(this.presenters.slice(idx+1, this.presenters.length));
+    this.numPresenters -= 1;
+  }
+
+  addPresenter(idx: number, name: string, time: number){
+    this.presenters.splice(idx, 0, {name: name, time: time});
+    this.numPresenters += 1;
+  }
+
+  getNowPresenterIndex(){
+    return this.nowPresenterIndex;
+  }
+
+  setNowPresenterIndex(nowPresenterIndex: number){
+    this.nowPresenterIndex = nowPresenterIndex;
+  }
+
+  toNextPresenter(prevTime: number){
+    if(this.nowPresenterIndex >= 0){
+      this.presenters[this.nowPresenterIndex]['time'] = prevTime; //実際に発表にかかった時間に更新
+    }
+
+    this.nowPresenterIndex += 1;
+    return this.presenters[this.nowPresenterIndex]['time'];
+  }
+
+  getPresentTime(){
+    return this.presentTime;
+  }
+
+  setPresentTime(num: number){
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    this.presentTime = num;
+    for(const presenter of presenters){
+      if(presenter['name'] !== 'break') presenter['time'] = num * 60;
+    }
+    this.presenters = presenters;
+  }
+
+  getNowPresentDate(){
+    // 今の発表者の終わり時間を計算
+    var sec = 0;
+    for(var i=0; i<this.nowPresenterIndex; i++){
+      sec += this.presenters[i]['time'];
+    }
+    const nowPresenterStartDate = new Date();
+    nowPresenterStartDate.setSeconds(this.startTime.getSeconds() + sec);
+    const nowPresenterEndDate = new Date();
+    nowPresenterEndDate.setSeconds(this.startTime.getSeconds() + sec + this.presenters[this.nowPresenterIndex]['time']);
+
+    return [nowPresenterStartDate, nowPresenterEndDate];
   }
 
   getBreakTime(){
     return this.breakTime;
   }
 
-  setBreakTime(){
+  setBreakTime(num: number){
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    this.breakTime = num;
+    for(const presenter of presenters){
+      if(presenter['name'] === 'break') presenter['time'] = num * 60;
+    }
+    this.presenters = presenters;
+  }
 
+  getPresenterList(){
+    var presenterlist = [];
+    for (const presenter of this.presenters){
+      presenterlist.push(presenter['name']);
+    }
+    return presenterlist;
+  }
+
+  setPresenterList(presenterlist: string[]){
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    for (var i=0; i < presenters.length; i++){
+      presenters[i]['name'] = presenterlist[i];
+    }
+    this.presenters = presenters;
+  }
+
+  getTimeSetting(){
+    var timesetting = [];
+    for (const presenter of this.presenters){
+      timesetting.push(presenter['time']);
+    }
+    return timesetting;
+  }
+
+  setTimeSetting(timesetting: number[]){
+    var presenters = this.presenters.slice(0, this.presenters.length);
+    for (var i=0; i < presenters.length; i++){
+      presenters[i]['time'] = timesetting[i];
+    }
+    this.presenters = presenters;
+  }
+
+  sendTimeInfo(){
+    const message = {
+      messagetype: "setting",
+      presenterlist: this.getPresenterList(),
+      starttime: this.startTime,
+      endtime: this.endTime,
+      presenttime: this.presentTime,
+      breaktime: this.breakTime,
+    }
+  }
+
+  sendChangePresenter(){
+    const message = {
+      messagetype: "changepresenter",
+      nextpresenter: this.nowPresenterIndex,
+      timesetting: this.getTimeSetting(),
+    }
+  }
+
+  receiveTimeInfo(message:any){
+    this.setPresenterList(message.presenterlist);
+    this.setStartTime(message.starttime);
+    this.setEndTime(message.endtime);
+    this.setPresentTime(message.presenttime);
+    this.setBreakTime(message.breaktime);
   }
 
   getChatMessage() {
@@ -82,4 +224,8 @@ export class TimeInfo{
     this.chatMessage = message
   }
 
+  receiveChangePresenter(message:any){
+    this.setNowPresenterIndex(message.nextpresenter);
+    this.setTimeSetting(message.timesetting);
+  }
 }
