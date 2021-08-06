@@ -1,4 +1,5 @@
   
+
 import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from '@material-ui/core/List';
@@ -28,6 +29,7 @@ const AlignItemsList = (props: AlignItemsListProps) => {
     //const chats = props.chats
 
     return (
+
         <div style={{height: 200, overflow: 'auto', border: '2px solid grey' }}>
             {chats.map((item, index) => (
                 <List className={classes.root}
@@ -38,6 +40,7 @@ const AlignItemsList = (props: AlignItemsListProps) => {
                     {/*<Divider variant="inset" component="li"/>*/}
                 </List>
             ))}
+
         </div>
     );
 }

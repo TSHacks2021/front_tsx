@@ -6,6 +6,7 @@ import { TodayPresenter } from "./TodayPresenter";
 import PresenterTab from "./PresenterTab"
 
 import {TimeInfo} from "../TimeInfo";
+
 import Socket from '../WebSocket'
 import { receiveMessageOnPort } from "worker_threads";
 
@@ -41,6 +42,7 @@ const dummyPresenters: TodayPresenter[] = [
 type MemoAreaProps = {
     presenters: string[];
     presenterNum: number;
+
     socket: Socket;
     timeInfo: TimeInfo;
 }
@@ -55,10 +57,12 @@ const sendMessage = (props: MemoAreaProps, presentername: string, sendmessage: s
     var mes_json = JSON.stringify(message);
     console.log(mes_json);
     props.socket.emit(mes_json);
+
 }
 
 const MemoArea = (props: MemoAreaProps) => {
     //const[presenters, setPresenters] = useState(dummyPresenters);
+
     dummypresenters = savedummypresenters.slice()
     if (savedummypresenters.length == 0) {
         for(var i = 0; i < props.presenterNum;i++) {
@@ -114,6 +118,7 @@ const MemoArea = (props: MemoAreaProps) => {
                 :p;
         });
         setPresenters(newPresenters);
+
         savedummypresenters = newPresenters.slice()
     };
 
@@ -121,13 +126,14 @@ const MemoArea = (props: MemoAreaProps) => {
         //送信の処理ができればここでする？
         sendMessage(props, presentername, sendmessage)        
     };
-    
+
     const presenterTabs = presenters.map((p) => {
         return(
             <PresenterTab
                 presenter={p}
                 key={p.id}
                 onMemoChange={(id, memo) => handleMemoChange(id, memo)}
+
                 onSendButtonClick={handleSendButtonClick}
                 //onMemoChange={(id, memo) => {}}
             />

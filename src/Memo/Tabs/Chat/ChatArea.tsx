@@ -20,7 +20,9 @@ import TextInput from "./TextInput";
 }*/
 type ChatAreaProps = {
     chats: string[];
+
     onSendButtonClick: (chat: string) => void;
+
 }
 
 const ChatArea = (props:ChatAreaProps) => {
@@ -28,6 +30,7 @@ const ChatArea = (props:ChatAreaProps) => {
     const[chats, setChats] = useState(props.chats);
     //boolean型のstateを作成
     const [update,setUpdata]=useState<boolean>(false)
+
     var newchat: string;
 
     const handleButtonClick = (message: string) => {
@@ -41,6 +44,7 @@ const ChatArea = (props:ChatAreaProps) => {
         //setUpdata(update?false:true)
         console.log(props.chats)
         props.onSendButtonClick(message);
+
     }
 
     return(
@@ -50,6 +54,7 @@ const ChatArea = (props:ChatAreaProps) => {
                     chats = {chats}
                     />
                 <TextInput
+
                     onButtonClick={handleButtonClick}/>
             </div>
         </React.Fragment>

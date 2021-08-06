@@ -25,11 +25,27 @@ function receiveMessage(e:any){
   if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
 }
 
+
+// let ws = new WebSocket("ws://localhost:1323/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+let socket = new Socket(ws);
+
+const timeInfo = new TimeInfo(socket);
+
+socket.on("message", receiveMessage);
+function receiveMessage(e:any){
+  let message = JSON.parse(e.data);
+  console.log(message);
+  
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <Time timeInfo={timeInfo}/>
+
     <Memo timeInfo={timeInfo}
       socket={socket}/>
+
     <button onClick={()=>{
       // var message = "React!";
       var message = {messagetype:"memo", message:"React!"};

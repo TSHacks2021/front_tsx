@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TimeInfo } from "../TimeInfo";
+
 import { useWindowDimensions } from "../WindowDimensions";
 
 const canvas_left_mag = 0.182;
@@ -28,6 +29,7 @@ type Props = {
   timeInfo: TimeInfo;
 }
 
+
 function calcBarPosition(starttime:number, endtime:number, times:number[], startposition:number, endposition:number) {
   var barposition:number[] = new Array(times.length - 1);
   var timelength = endtime - starttime;
@@ -39,11 +41,14 @@ function calcBarPosition(starttime:number, endtime:number, times:number[], start
     for (var j = 0; j <= i; j++) {
       sum += times[j];
     }
+
     barposition[i] = startposition + (barlength * (sum / timelength));
+
   }
 
   return barposition;
 }
+
 
 function calcNowtimePosition(timestr:string, starttime:number, endtime:number, startposition:number, endposition:number) {
   var timelength = endtime - starttime;
@@ -84,6 +89,7 @@ function hourminsecTosec(time:string) {
   return ((hour * 3600) + (min * 60) + second);
 }
 
+
 function draw(context:any, canvasRef:any, width:number, height:number, starttime:number, endtime:number, names:string[], times:number[]) {
   var startposition = startposition_mag * width;
   var endposition = endposition_mag * width;
@@ -97,10 +103,12 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
     if (canvasRef.current) context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     var barposition = calcBarPosition(starttime, endtime, times, startposition, endposition);
     context.globalAlpha = 1.0;
+
     context.strokeStyle = 'black';
     context.textAlign = 'center';
     // begin time
     context.beginPath();
+
     context.moveTo(startposition, bar_y_position - (vertical_bar_y_mag * width));
     context.lineTo(startposition, bar_y_position + (vertical_bar_y_mag * width));
     context.stroke();
@@ -118,17 +126,20 @@ function draw(context:any, canvasRef:any, width:number, height:number, starttime
     context.fillText(names[names.length - 1], (barposition[barposition.length - 1] + endposition) / 2, bar_y_position - (nametext_y_mag * width));
     context.font = font_big;
     context.fillText(secTohourmin(endtime), endposition, bar_y_position + (timetext_y_mag * width));
+
   
     // change time
     for (var i = 0; i < barposition.length + 1; i++) {
       context.strokeStyle = 'black';
       context.beginPath();
+
       context.moveTo(barposition[i], bar_y_position - (vertical_bar_y_mag * width));
       context.lineTo(barposition[i], bar_y_position + (vertical_bar_y_mag * width));
       context.stroke();
       context.strokeStyle = colors[i];
       context.beginPath();
       if (i == 0) {
+
         context.moveTo(startposition, bar_y_position);
       }
       else {
@@ -177,12 +188,14 @@ function TimeBar(props: Props) {
   const [endTime, setEndTime] = React.useState(props.timeInfo.getEndTime());
   const [presenters, setPresenters] = React.useState(props.timeInfo.getPresenters());
   const windowdimensions = useWindowDimensions();
+
   var starttime:number;
   var endtime:number;
   var names:string[] = [];
   var times:number[] = [];
   var width:number = windowdimensions.width;
   var height:number = windowdimensions.height;
+
 
   if (checksetStartTime) clearInterval(checksetStartTime);
   checksetStartTime = setInterval(function(){setStartTime(props.timeInfo.getStartTime())}, 100);
@@ -203,6 +216,7 @@ function TimeBar(props: Props) {
   React.useEffect(() => {
     if (canvasRef.current) {
       canvasRef.current.style.position = 'absolute';
+
       canvasRef.current.style.left = String(canvas_left_mag * width) + 'px';
       canvasRef.current.style.top = '10px';
       if (checkdraw) clearInterval(checkdraw);
@@ -213,8 +227,10 @@ function TimeBar(props: Props) {
         setContext(renderCtx);
       }
     }
+
     draw(context, canvasRef, width, height, starttime, endtime, names, times);
   }, [context, startTime, endTime, presenters, windowdimensions]);
+
 
   return (
     <div
@@ -224,6 +240,7 @@ function TimeBar(props: Props) {
       <canvas
         id="canvas"
         ref={canvasRef}
+
         width={canvas_right_mag * width}
         height={canvas_bottom_mag * width}
         style={{

@@ -5,16 +5,19 @@ type TabTitleProps = {
     title: string
     index: number
     setSelectedTab: (index: number) => void
+
     isSelected: boolean
 }
 
 const TabTitle: React.FC<TabTitleProps> = ({title, setSelectedTab, index, isSelected}) => {
+
     const onClick = useCallback(() => {
         setSelectedTab(index)
     }, [setSelectedTab, index])
     
     return(
         <li>
+
             {
                 (() => {
                     if(isSelected) {

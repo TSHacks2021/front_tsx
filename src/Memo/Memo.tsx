@@ -31,6 +31,14 @@ function Memo(props: MemoProps) {
     }
   }
 
+  const presenter = props.timeInfo.getPresenters()
+  const presenterNum = props.timeInfo.getNumPresenters()
+  var presenters:string[] = new Array(presenterNum)
+
+  for(var i = 0; i < presenterNum; i++) {
+    presenters[i] = presenter[i].name
+  }
+
   React.useEffect(() => {
     if (canvasRef.current) {
       const renderCtx = canvasRef.current.getContext('2d');

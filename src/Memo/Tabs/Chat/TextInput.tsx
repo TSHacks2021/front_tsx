@@ -25,6 +25,7 @@ class TextInput extends Component {
 */
 
 type TextInputProps = {
+
     onButtonClick: (e: any) => void;
 };
 
@@ -42,10 +43,12 @@ const TextInput = (props:TextInputProps) => {
     //enterを押したときに勝手にリフレッシュされるのを防止
     const handleSubmit = (e: any) => {
         e.preventDefault();
+
     }
 
     return(
         <React.Fragment>
+
             <form className="wrap" noValidate autoComplete="off" onSubmit={e => handleSubmit(e)}>
                 <TextField
                     id = "name-text"
@@ -58,6 +61,7 @@ const TextInput = (props:TextInputProps) => {
                     label="メッセージを入力"
                     className="text"
                     margin="normal"
+
                     onKeyPress={e => {
                         if (e.key == 'Enter') {
                             handleSendButtonClick(e);
