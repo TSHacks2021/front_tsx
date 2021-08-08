@@ -23,7 +23,7 @@ const ChatArea = (props:ChatAreaProps) => {
                     chats = {chats}
                     />
                 <TextInput
-                    onButtonClick={handleButtonClick}/>
+                    onSendButtonClick={handleButtonClick}/>
             </div>
         </React.Fragment>
     )
