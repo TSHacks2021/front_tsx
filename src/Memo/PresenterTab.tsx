@@ -11,7 +11,7 @@ type PresenterTabProps = {
 };
 
 const PresenterTab = (props:PresenterTabProps) => {
-    const {name, memo, chats} = props.presenter;
+    const {name, privateMemo, chats} = props.presenter;
 
     //PrivateMemoが変更されたら
     const handlePrivateMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -32,7 +32,7 @@ const PresenterTab = (props:PresenterTabProps) => {
                     <textarea
                         className="memo"
                         placeholder="プライベートメモ"
-                        value={memo}
+                        value={privateMemo}
                         onChange={handlePrivateMemoChange}
                     />
                 </div>
