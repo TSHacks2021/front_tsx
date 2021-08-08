@@ -1,6 +1,4 @@
-import { render } from '@testing-library/react';
 import * as React from 'react';
-//import PrivateMemo from './PrivateMemo';
 import MemoArea from './MemoArea';
 import {TimeInfo} from '../TimeInfo'
 import Socket from '../WebSocket'
@@ -21,6 +19,8 @@ function Memo(props: MemoProps) {
 
   //const presenter = props.timeInfo.getPresenters()
   //const presenterNum = props.timeInfo.getNumPresenters()
+  
+  //発表者リストの作成
   var presenters:string[] = new Array(0)
 
   for(var i = 0; i < presenter.length; i++) {
@@ -30,15 +30,7 @@ function Memo(props: MemoProps) {
       presenters.push(presenter[i].name)
     }
   }
-
-  // const presenter = props.timeInfo.getPresenters()
-  // const presenterNum = props.timeInfo.getNumPresenters()
-  var presenters:string[] = new Array(0)
-
-  for(var i = 0; i < presenter.length; i++) {
-    presenters[i] = presenter[i].name
-  }
-
+  
   React.useEffect(() => {
     if (canvasRef.current) {
       const renderCtx = canvasRef.current.getContext('2d');
