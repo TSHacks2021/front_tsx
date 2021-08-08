@@ -92,8 +92,8 @@ const MemoArea = (props: MemoAreaProps) => {
 
     React.useEffect(() => {
         const newPresenters = presenters.map((p) => {
-            /*
-            if (p.id == number(newMessage["to"])) {
+            //json内容によって変える．送信者をつけてよければ，こちらのモードで
+            if (p.id == Number(newMessage["to"])) {
                 p.chats.push(newMessage["sender"]+": "+newMessage["message"])
                 return{...p, chats:p.chats}
             } else {
