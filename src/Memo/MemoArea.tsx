@@ -111,7 +111,9 @@ const MemoArea = (props: MemoAreaProps) => {
         savedummypresenters = newPresenters.slice()
     },[newMessage])
 
-    const handleMemoChange = (id: number, memo: string) => {
+    //プライベートメモが変更された場合
+    const handlePrivateMemoChange = (id: number, memo: string) => {
+        //取得された文字列を保存
         const newPresenters = presenters.map((p) => {
             return p.id === id
                 ? {...p, memo:memo}
@@ -132,7 +134,7 @@ const MemoArea = (props: MemoAreaProps) => {
             <PresenterTab
                 presenter={p}
                 key={p.id}
-                onMemoChange={(id, memo) => handleMemoChange(id, memo)}
+                onPrivateMemoChange={(id, memo) => handlePrivateMemoChange(id, memo)}
 
                 onSendButtonClick={handleSendButtonClick}
                 //onMemoChange={(id, memo) => {}}
