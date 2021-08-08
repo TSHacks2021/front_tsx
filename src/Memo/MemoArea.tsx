@@ -46,6 +46,7 @@ type MemoAreaProps = {
     socket: Socket;
     timeInfo: TimeInfo;
 }
+
 var dummypresenters: TodayPresenter[]
 var savedummypresenters: TodayPresenter[] = new Array(0)
 var checksetMessage: any = null
@@ -63,6 +64,7 @@ const sendMessage = (props: MemoAreaProps, presentername: string, sendmessage: s
 const MemoArea = (props: MemoAreaProps) => {
     //const[presenters, setPresenters] = useState(dummyPresenters);
 
+    //発表者リストの作成
     dummypresenters = savedummypresenters.slice()
     if (savedummypresenters.length == 0) {
         for(var i = 0; i < props.presenterNum;i++) {
@@ -74,19 +76,7 @@ const MemoArea = (props: MemoAreaProps) => {
     const [newMessage, setNewMessage] = useState(props.timeInfo.getChatMessage())
     /*props.socket.on("message", receiveMessage);
 
-    function receiveMessage(e:any){
-        let message = JSON.parse(e.data);
-        console.log(message);
-        const newPresenters = presenters.map((p) => {
-            if (p.id == 0) {
-                p.chats.push(message["message"])
-                return{...p, chats:p.chats}
-            } else {
-                return p;
-            }
-        });
-        setPresenters(newPresenters);
-    }*/
+    //　100msごとにメッセージが来ていないか確認する
     if (checksetMessage) clearInterval(checksetMessage);
     checksetMessage = setInterval(function(){setNewMessage(props.timeInfo.getChatMessage())}, 100);
 
@@ -108,6 +98,7 @@ const MemoArea = (props: MemoAreaProps) => {
             }
         });
         setPresenters(newPresenters);
+        //save用の個所に保存しておく
         savedummypresenters = newPresenters.slice()
     },[newMessage])
 
@@ -124,6 +115,7 @@ const MemoArea = (props: MemoAreaProps) => {
         savedummypresenters = newPresenters.slice()
     };
 
+    //送信ボタンが押された場合
     const handleSendButtonClick = (presentername: string, sendmessage: string) => {
         //送信の処理ができればここでする？
         sendMessage(props, presentername, sendmessage)        
@@ -137,7 +129,6 @@ const MemoArea = (props: MemoAreaProps) => {
                 onPrivateMemoChange={(id, memo) => handlePrivateMemoChange(id, memo)}
 
                 onSendButtonClick={handleSendButtonClick}
-                //onMemoChange={(id, memo) => {}}
             />
         );
     });
