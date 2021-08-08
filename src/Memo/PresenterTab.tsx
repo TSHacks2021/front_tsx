@@ -30,9 +30,7 @@ const PresenterTab = (props:PresenterTabProps) => {
                 <div className="box">
                 <div className="field">
                     <textarea
-                        //type="text"
                         className="memo"
-
                         placeholder="プライベートメモ"
                         value={memo}
                         onChange={handlePrivateMemoChange}
@@ -40,8 +38,7 @@ const PresenterTab = (props:PresenterTabProps) => {
                 </div>
                 <div className="field">
                     <ChatArea
-                        chats={chats}/*value={chats}*/
-
+                        chats={chats}
                         onSendButtonClick={handleSendButtonClick}
                     />
                 </div>
