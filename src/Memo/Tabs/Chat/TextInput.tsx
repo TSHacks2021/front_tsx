@@ -3,38 +3,20 @@ import React, {Component} from "react";
 import TextField from "@material-ui/core/TextField";
 import "./TextInput.css"
 import SendButton from './SendButton';
-import { isPropertySignature } from "typescript";
-/*
-class TextInput extends Component {
-    render() {
-        return (
-            <React.Fragment>
-                <form className="wrap" noValidate autoComplete="off">
-                    <TextField
-                        id = "standard-text"
-                        label="メッセージを入力"
-                        className="text"
-                        margin="normal"
-                    />
-                    <SendButtons />
-                </form>
-            </React.Fragment>
-        );
-    }
-}
-*/
 
 type TextInputProps = {
-
-    onButtonClick: (e: any) => void;
+    onSendButtonClick: (e: any) => void;
 };
 
 const TextInput = (props:TextInputProps) => {  
+    //送信ボタンが押された場合
     const handleSendButtonClick = (e: any) => {
+
+        //送信者の名前と書き込まれた内容を取り出す
         var chatfield =document.getElementById('standard-text') as HTMLInputElement;
         var namefield =document.getElementById('name-text') as HTMLInputElement;
-        props.onButtonClick(namefield.value+' '+chatfield.value)
-        //console.log(chatfield)
+        props.onSendButtonClick(namefield.value+': '+chatfield.value)
+        //書き込み欄の内容はクリアする，送信者の名前は変えない
         if (chatfield != null) {
             chatfield.value="";
         }
@@ -43,7 +25,6 @@ const TextInput = (props:TextInputProps) => {
     //enterを押したときに勝手にリフレッシュされるのを防止
     const handleSubmit = (e: any) => {
         e.preventDefault();
-
     }
 
     return(
@@ -61,7 +42,7 @@ const TextInput = (props:TextInputProps) => {
                     label="メッセージを入力"
                     className="text"
                     margin="normal"
-
+                    //enterが押されたら送信する
                     onKeyPress={e => {
                         if (e.key == 'Enter') {
                             handleSendButtonClick(e);
