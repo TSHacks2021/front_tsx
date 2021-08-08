@@ -16,25 +16,25 @@ const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
         name: "A",
-        memo: "",
+        privateMemo: "",
         chats: ["こんにちは！a", "aさん", "遊びましょう！", "今度また～"],
     },
     {
         id: 2,
         name: "B",
-        memo: "",
+        privateMemo: "",
         chats: ["こんにちは！b"],
     },
     {
         id: 3,
         name: "C",
-        memo: "",
+        privateMemo: "",
         chats: [""],
     },
     {
         id: 4,
         name: "D",
-        memo: "",
+        privateMemo: "",
         chats: [""],
     },
 ];
@@ -68,7 +68,7 @@ const MemoArea = (props: MemoAreaProps) => {
     dummypresenters = savedummypresenters.slice()
     if (savedummypresenters.length == 0) {
         for(var i = 0; i < props.presenterNum;i++) {
-            dummypresenters[i] = {id:i,name:props.presenters[i],memo:"",chats:[]}
+            dummypresenters[i] = {id:i,name:props.presenters[i],privateMemo:"",chats:[]}
         }
     }
 
