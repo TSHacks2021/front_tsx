@@ -19,6 +19,7 @@ type AlignItemsListProps = {
     chats: string[]
 }
 
+//　チャット内容を表示する
 const AlignItemsList = (props: AlignItemsListProps) => {
     const[chats, setChats] = useState(props.chats)
     const classes = useStyles();
