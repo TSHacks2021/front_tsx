@@ -74,7 +74,6 @@ const MemoArea = (props: MemoAreaProps) => {
 
     const[presenters, setPresenters] = useState(dummypresenters)
     const [newMessage, setNewMessage] = useState(props.timeInfo.getChatMessage())
-    /*props.socket.on("message", receiveMessage);
 
     //　100msごとにメッセージが来ていないか確認する
     if (checksetMessage) clearInterval(checksetMessage);
