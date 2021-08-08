@@ -1,5 +1,4 @@
 import React, {ReactElement, useState} from "react";
-//import Tab from "./Tab";
 import TabTitle from "./TabTitle";
 import "./Tabs.css"
 
@@ -7,6 +6,7 @@ type TabsProps = {
     children: ReactElement[]
 }
 
+//クリックされたtabの内容を出力するようにする
 const Tabs: React.FC<TabsProps> = ({children}) => {
     const[selectedTab, setSelectedTab] = useState(0)
 
