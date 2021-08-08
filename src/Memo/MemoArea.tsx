@@ -121,6 +121,7 @@ const MemoArea = (props: MemoAreaProps) => {
         sendMessage(props, presentername, sendmessage)        
     };
 
+    //PresenterTab.tsxへ
     const presenterTabs = presenters.map((p) => {
         return(
             <PresenterTab
