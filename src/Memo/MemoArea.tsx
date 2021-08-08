@@ -88,14 +88,15 @@ const MemoArea = (props: MemoAreaProps) => {
                 return{...p, chats:p.chats}
             } else {
                 return p;
-            }*/
-            
+            }
+            /*
+            //送信者をつけないバージョン
             if (p.id == 0) {
                 p.chats.push(newMessage["message"])
                 return{...p, chats:p.chats}
             } else {
                 return p;
-            }
+            }*/
         });
         setPresenters(newPresenters);
         //save用の個所に保存しておく
@@ -111,7 +112,7 @@ const MemoArea = (props: MemoAreaProps) => {
                 :p;
         });
         setPresenters(newPresenters);
-
+        //save用の個所に保存しておく
         savedummypresenters = newPresenters.slice()
     };
 
