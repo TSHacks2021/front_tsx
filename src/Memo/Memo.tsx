@@ -13,23 +13,20 @@ type MemoProps = {
 function Memo(props: MemoProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
-  const [presenter, setPresenters] = React.useState(props.timeInfo.getPresenters());
+  const [presenterList, setPresenterList] = React.useState(props.timeInfo.getPresenterList());
   if (checksetPresenters) clearInterval(checksetPresenters);
-  checksetPresenters = setInterval(function(){setPresenters(props.timeInfo.getPresenters())}, 100);
+  checksetPresenters = setInterval(function(){setPresenterList(props.timeInfo.getPresenterList())}, 100);
 
   //const presenter = props.timeInfo.getPresenters()
   //const presenterNum = props.timeInfo.getNumPresenters()
-  
+
   //発表者リストの作成
   var presenters:string[] = new Array(0)
 
-  for(var i = 0; i < presenter.length; i++) {
-    var temp_name = presenter[i].name
-    if(temp_name != 'break') {
-      //presenters[i] = presenter[i].name
-      presenters.push(presenter[i].name)
-    }
-  }
+  React.useEffect(() => {
+    const newPresenterList = presenterList
+    presenters = newPresenterList
+  },[presenterList])
   
   React.useEffect(() => {
     if (canvasRef.current) {
