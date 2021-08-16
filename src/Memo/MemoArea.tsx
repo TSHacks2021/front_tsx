@@ -51,8 +51,8 @@ var dummypresenters: TodayPresenter[]
 var savedummypresenters: TodayPresenter[] = new Array(0)
 var checksetMessage: any = null
 
-const sendMessage = (props: MemoAreaProps, presentername: string, sendmessage: string) => {
-    var message = {"messagetype":"memo", "presentername": presentername, "message": sendmessage};
+const sendMessage = (props: MemoAreaProps, presenter: number, sender: string, sendmessage: string) => {
+    var message = {"messagetype":"memo", "presenter": presenter, "sender": sender, "message": sendmessage};
     //var message = {"messagetype":"memo", "message": sendmessage};
     //var message = {"messagetype":"message"};
     var mes_json = JSON.stringify(message);
@@ -116,9 +116,9 @@ const MemoArea = (props: MemoAreaProps) => {
     };
 
     //送信ボタンが押された場合
-    const handleSendButtonClick = (presentername: string, sendmessage: string) => {
+    const handleSendButtonClick = (presenter: number, sender: string, sendmessage: string) => {
         //送信の処理ができればここでする？
-        sendMessage(props, presentername, sendmessage)        
+        sendMessage(props, presenter, sender, sendmessage)        
     };
 
     //PresenterTab.tsxへ
