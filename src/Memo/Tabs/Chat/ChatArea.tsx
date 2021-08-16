@@ -5,15 +5,15 @@ import TextInput from "./TextInput";
 
 type ChatAreaProps = {
     chats: string[];
-    onSendButtonClick: (chat: string) => void;
+    onSendButtonClick: (name: string, chat: string) => void;
 }
 
 const ChatArea = (props:ChatAreaProps) => {
     const[chats, setChats] = useState(props.chats);
 
     //送信ボタンが押された場合
-    const handleButtonClick = (message: string) => {
-        props.onSendButtonClick(message);
+    const handleButtonClick = (name: string, message: string) => {
+        props.onSendButtonClick(name, message);
     }
 
     return(

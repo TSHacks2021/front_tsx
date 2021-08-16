@@ -5,7 +5,7 @@ import "./TextInput.css"
 import SendButton from './SendButton';
 
 type TextInputProps = {
-    onSendButtonClick: (e: any) => void;
+    onSendButtonClick: (name: string, message: string) => void;
 };
 
 const TextInput = (props:TextInputProps) => {  
@@ -15,7 +15,8 @@ const TextInput = (props:TextInputProps) => {
         //送信者の名前と書き込まれた内容を取り出す
         var chatfield =document.getElementById('standard-text') as HTMLInputElement;
         var namefield =document.getElementById('name-text') as HTMLInputElement;
-        props.onSendButtonClick(namefield.value+': '+chatfield.value)
+
+        props.onSendButtonClick(namefield.value, chatfield.value)
         //書き込み欄の内容はクリアする，送信者の名前は変えない
         if (chatfield != null) {
             chatfield.value="";

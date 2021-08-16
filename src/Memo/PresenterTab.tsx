@@ -7,7 +7,7 @@ import ChatArea from "./Tabs/Chat/ChatArea";
 type PresenterTabProps = {
     presenter: TodayPresenter;
     onPrivateMemoChange: (id: number, memo: string) => void;
-    onSendButtonClick: (presenterName:string, message: string) => void;
+    onSendButtonClick: (presenter:number, name:string, message: string) => void;
 };
 
 const PresenterTab = (props:PresenterTabProps) => {
@@ -19,8 +19,8 @@ const PresenterTab = (props:PresenterTabProps) => {
     };
 
     //PublicMemoの送信ボタンが押されたら
-    const handleSendButtonClick = (message: string) => {
-        props.onSendButtonClick(props.presenter.name, message);
+    const handleSendButtonClick = (name: string, message: string) => {
+        props.onSendButtonClick(props.presenter.id, name, message);
     };
 
     //Tab.tsx, ChatArea.tsxへ
