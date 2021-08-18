@@ -11,13 +11,13 @@ export class TimeInfo{
 
 
   private startTime: Date = new Date();
-  private endTime: Date  = new Date();
+  private endTime: Date = new Date();
   private numPresenters: number = 1;
   private presenters: Presenter[] = new Array(this.numPresenters).fill({name: '', time: 0});
   private nowPresenterIndex = -1;
   private presentTime = 0;
   private breakTime = 0;
-  private chatMessage = {to:"-1", sender:"",message:""};
+  private chatMessage = {presenter:"-1", sender:"",message:""};
 
   private socket: Socket;
 
@@ -36,7 +36,7 @@ export class TimeInfo{
   }
 
   getStartTime(){
-    return this.startTime;
+    return this.startTime
   }
 
   getEndTime(){
@@ -210,8 +210,8 @@ export class TimeInfo{
     const message = {
       messagetype: "setting",
       presenterlist: this.getPresenterList(),
-      starttime: this.startTime,
-      endtime: this.endTime,
+      starttime: this.startTime.getTime(),
+      endtime: this.endTime.getTime(),
       presenttime: this.presentTime,
       breaktime: this.breakTime,
     }
@@ -234,8 +234,8 @@ export class TimeInfo{
 
   receiveTimeInfo(message:any){
     this.setPresenterList(message.presenterlist);
-    this.setStartTime(message.starttime);
-    this.setEndTime(message.endtime);
+    this.setStartTime(new Date(message.starttime));
+    this.setEndTime(new Date(message.endtime));
     this.setPresentTime(message.presenttime);
     this.setBreakTime(message.breaktime);
   }

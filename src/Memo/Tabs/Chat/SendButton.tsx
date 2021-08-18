@@ -1,16 +1,16 @@
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(1),
+        fontSize: 15
     },
     leftIcon: {
         marginRight: theme.spacing(1),
     },
     iconSmall: {
-        fontSize: 14,
+        fontSize: 3,
     },
 }));
 
@@ -31,7 +31,7 @@ const SendButton = (props:SendButtonProps) => {
             color="primary" 
             className={classes.button}
             onClick={handleSendButtonClick}>
-            <Icon>send</Icon>
+            送信
         </Button>
     );
 }

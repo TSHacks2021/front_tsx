@@ -40,16 +40,16 @@ const dummyPresenters: TodayPresenter[] = [
 ];
 
 type MemoAreaProps = {
-    presenters: string[];
+    presenters: TodayPresenter[];
     presenterNum: number;
 
     socket: Socket;
     timeInfo: TimeInfo;
 }
 
-var dummypresenters: TodayPresenter[]
-var savedummypresenters: TodayPresenter[] = new Array(0)
-var checksetMessage: any = null
+var dummypresenters: TodayPresenter[];
+var savedummypresenters: TodayPresenter[] = new Array(0);
+var checksetMessage: any = null;
 
 const sendMessage = (props: MemoAreaProps, presenter: number, sender: string, sendmessage: string) => {
     var message = {"messagetype":"memo", "presenter": presenter, "sender": sender, "message": sendmessage};
@@ -68,21 +68,23 @@ const MemoArea = (props: MemoAreaProps) => {
     dummypresenters = savedummypresenters.slice()
     if (savedummypresenters.length == 0) {
         for(var i = 0; i < props.presenterNum;i++) {
-            dummypresenters[i] = {id:i,name:props.presenters[i],privateMemo:"",chats:[]}
+            dummypresenters[i] = {id:i,name:props.presenters[i].name,privateMemo:"",chats:[]}
         }
     }
-
-    const[presenters, setPresenters] = useState(dummypresenters)
-    const [newMessage, setNewMessage] = useState(props.timeInfo.getChatMessage())
+    var savedummypresenters2: TodayPresenter[];
+    const[presenters, setPresenters] = useState(props.presenters)
+    const [newMessage, setNewMessage] = useState(props.timeInfo.getChatMessage());
 
     //　100msごとにメッセージが来ていないか確認する
     if (checksetMessage) clearInterval(checksetMessage);
-    checksetMessage = setInterval(function(){setNewMessage(props.timeInfo.getChatMessage())}, 100);
+    checksetMessage = setInterval(function(){
+        console.log("b");
+        setNewMessage(props.timeInfo.getChatMessage())}, 100);
 
     React.useEffect(() => {
         const newPresenters = presenters.map((p) => {
             //json内容によって変える．送信者をつけてよければ，こちらのモードで
-            if (p.id == Number(newMessage["to"])) {
+            if (p.id == Number(newMessage["presenter"])) {
                 p.chats.push(newMessage["sender"]+": "+newMessage["message"])
                 return{...p, chats:p.chats}
             } else {
@@ -100,6 +102,7 @@ const MemoArea = (props: MemoAreaProps) => {
         setPresenters(newPresenters);
         //save用の個所に保存しておく
         savedummypresenters = newPresenters.slice()
+        savedummypresenters2 = newPresenters.slice()
     },[newMessage])
 
     //プライベートメモが変更された場合

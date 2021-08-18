@@ -9,8 +9,8 @@ import reportWebVitals from './reportWebVitals';
 import MemoArea from './Memo/MemoArea';
 
 
-let ws = new WebSocket("ws://localhost:63494/ws");
-// let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+let ws = new WebSocket("ws://localhost:8080/ws");
+//let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 
 const timeInfo = new TimeInfo(socket);
