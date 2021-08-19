@@ -1,0 +1,13 @@
+{
+	"name": "node app",
+	"dockerComposeFile": [
+	  "./docker-compose.yml",
+	],
+	"service": "node",
+	// "context": "..",
+	"workspaceFolder": "/usr/src/app",
+	"extensions": [
+	],
+	"settings": {},
+	"postCreateCommand": "npm install"
+}
