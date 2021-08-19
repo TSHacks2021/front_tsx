@@ -198,7 +198,7 @@ function TimeBar(props: Props) {
 
 
   if (checksetStartTime) clearInterval(checksetStartTime);
-  checksetStartTime = setInterval(function(){console.log("timebar"); setStartTime(props.timeInfo.getStartTime())}, 100);
+  checksetStartTime = setInterval(function(){/*console.log("timebar"); */setStartTime(props.timeInfo.getStartTime())}, 100);
   starttime = hourminsecTosec(startTime.toLocaleTimeString([], {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'}));
 
   if (checksetEndTime) clearInterval(checksetEndTime);

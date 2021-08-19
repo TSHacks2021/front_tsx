@@ -17,7 +17,7 @@ export class TimeInfo{
   private nowPresenterIndex = -1;
   private presentTime = 0;
   private breakTime = 0;
-  private chatMessage = {presenter:"-1", sender:"",message:""};
+  private chatMessage = {messagetype: "memo", message: "", presenter:-1, sender:""};
 
   private socket: Socket;
 
