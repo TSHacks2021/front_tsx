@@ -135,10 +135,9 @@ const MemoArea = (props: MemoAreaProps) => {
             console.log(newPresenterNameList)
             const newTPresenterList: TodayPresenter[] = new Array(0)
             var count = 0
-        for(var i = 0; i < presenterNameList.length; i++) {
-          var temp_name = presenterNameList[i]
-          
-          if(temp_name !== 'break') {
+            for(var i = 0; i < newPresenterNameList.length; i++) {
+                var temp_name = newPresenterNameList[i]
+                if(temp_name !== 'break') {
                     var f = false
                     for(var j=0; j < saveTPresentersList.length; j++) {
                         //発表者のidと名前が変更されていなかったら，その記録は残しておく
