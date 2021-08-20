@@ -121,35 +121,57 @@ const MemoArea = (props: MemoAreaProps) => {
         });
         setTPresenterList(newtPresenters);
         //save用の個所に保存しておく
-        savedummypresenters = newtPresenters.slice()
-        savedummypresenters2 = newtPresenters.slice()
+        saveTPresentersList = newtPresenters.slice()
+        setUpdate(update?false:true)
     },[newMessage])
-    /*
+    
     React.useEffect(() => {
-        //const newPresenterList = presenterList
-        //const newPresenterNameList: string[] = new Array(0)
-        console.log(presenterNameList)
-        const newTPresenterList: TodayPresenter[] = new Array(0)
-        var count = 0
+        //新しいリストを取得
+        if(isNameListChange) {
+            setIsNameListChange(false)
+            const newPresenterNameList = props.timeInfo.getPresenterList()
+            //保存用
+            savepresenterNmaeList = newPresenterNameList
+            console.log(newPresenterNameList)
+            const newTPresenterList: TodayPresenter[] = new Array(0)
+            var count = 0
         for(var i = 0; i < presenterNameList.length; i++) {
           var temp_name = presenterNameList[i]
           
           if(temp_name !== 'break') {
-            //presenters[i] = presenter[i].name
-            count += 1
-            const tempTodayPresenter = {
-              id: count,
-              name: temp_name,
-              privateMemo: "",
-              chats: [""],
-          }
-            newTPresenterList.push(tempTodayPresenter)
-            //newPresenterNameList.push(temp_name)
-          }
+                    var f = false
+                    for(var j=0; j < saveTPresentersList.length; j++) {
+                        //発表者のidと名前が変更されていなかったら，その記録は残しておく
+                        if((saveTPresentersList[j].id === count) && (saveTPresentersList[j].name === temp_name)) {
+                            f = true
+                            break
+                        }
+                    }
+                    var tempTodayPresenter: TodayPresenter;
+                    if(f) {
+                        tempTodayPresenter = {
+                            id: count,
+                            name: temp_name,
+                            privateMemo: saveTPresentersList[j].privateMemo,
+                            chats: saveTPresentersList[j].chats,
+                        }
+                    } else {
+                        tempTodayPresenter = {
+                            id: count,
+                            name: temp_name,
+                            privateMemo: "",
+                            chats: [] as string[],
+                        }
+                    }
+                    count += 1;
+                    newTPresenterList.push(tempTodayPresenter);
+                }
+            }
+            setTPresenterList(newTPresenterList)
+            saveTPresentersList = newTPresenterList;
         }
-        setTPresenterList(newTPresenterList)
-      },[presenterNameList])
-      */
+    },[isNameListChange])
+      
     //プライベートメモが変更された場合
     const handlePrivateMemoChange = (id: number, memo: string) => {
         //取得された文字列を保存
