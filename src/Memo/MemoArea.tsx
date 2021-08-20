@@ -63,25 +63,36 @@ const sendMessage = (props: MemoAreaProps, presenter: number, sender: string, se
 }
 
 const MemoArea = (props: MemoAreaProps) => {
-    //const[presenters, setPresenters] = useState(dummyPresenters);
-
-    //発表者リストの作成
-    /*
-    dummypresenters = savedummypresenters.slice()
-    if (savedummypresenters.length == 0) {
-        for(var i = 0; i < props.presenterNum;i++) {
-            dummypresenters[i] = {id:i,name:props.tPresenters[i].name,privateMemo:"",chats:[]}
-        }
-    }*/
-    var savedummypresenters2: TodayPresenter[];
-    //const[tpresenters, settPresenters] = useState<TodayPresenter[]>(props.tPresenters)
-    //const[tpresenters, settPresenters] = useState([] as TodayPresenter[])
+    //新しいメッセージの受取用
     const [newMessage, setNewMessage] = useState(props.timeInfo.getChatMessage());
-    const [presenterNameList, setPresenterNameList] = React.useState(props.timeInfo.getPresenterList());
-    const [tPresenterList, setTPresenterList] = React.useState([] as TodayPresenter[]);
-    //　100msごとにメッセージが来ていないか確認する
+    const [tPresenterList, setTPresenterList] = React.useState([] as TodayPresenter[]);//発表者リスト
+    const [isNameListChange, setIsNameListChange] = useState(false) //名前リストの内容が変更されたかどうか
+    const [update, setUpdate] = useState<boolean>(false)//再レンダリング用
+    // console.log("再レンダリング")
+
+    //　100msごとに発表者に変更がないか確認する
+    //　変更が合った場合には，書き換えを行う(useEffect)
     if (checksetPresenters) clearInterval(checksetPresenters);
-    checksetPresenters = setInterval(function(){/*console.log('memo');*/ setPresenterNameList(props.timeInfo.getPresenterList())}, 100);
+    checksetPresenters = setInterval(function(){
+        //内容が変更されたときのみuseEffectが呼び出されるようにする
+        const gotPresenterNameList = props.timeInfo.getPresenterList()
+        const presenterLength = gotPresenterNameList.length
+        if (presenterLength != savepresenterNmaeList.length) {
+            //長さが等しくないならば
+            setIsNameListChange(true);
+        } else {
+            //長さは等しいならば内容を調べる
+            for(var i=0; i < gotPresenterNameList.length; i++) {
+                if (gotPresenterNameList[i] !== savepresenterNmaeList[i]) {
+                    //内容が異なるならば
+                    setIsNameListChange(true);
+                    break
+                }
+            }
+        }
+    })
+        //setPresenterNameList(props.timeInfo.getPresenterList())}, 100);
+    //メッセージが来ていないか確認する
     if (checksetMessage) clearInterval(checksetMessage);
     checksetMessage = setInterval(function(){
         //console.log("b");
