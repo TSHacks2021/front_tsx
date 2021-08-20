@@ -1,16 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Tabs from "./Tabs/Tabs"
-import Tab from "./Tabs/Tab"
-import Memo from "./Memo";
 import { TodayPresenter } from "./TodayPresenter";
 import PresenterTab from "./PresenterTab"
 
 import {TimeInfo} from "../TimeInfo";
 
 import Socket from '../WebSocket'
-import { receiveMessageOnPort } from "worker_threads";
 
-//function SampleMemo() {
 
 /*ダミーデータ
 const dummyPresenters: TodayPresenter[] = [
@@ -41,8 +37,6 @@ const dummyPresenters: TodayPresenter[] = [
 ];
 */
 type MemoAreaProps = {
-    //tPresenters: TodayPresenter[];
-    //presenterNum: number;
     socket: Socket;
     timeInfo: TimeInfo;
 }
@@ -54,12 +48,9 @@ var checksetPresenters:any = null;
 
 const sendMessage = (props: MemoAreaProps, presenter: number, sender: string, sendmessage: string) => {
     var message = {"messagetype":"memo", "presenter": presenter, "sender": sender, "message": sendmessage};
-    //var message = {"messagetype":"memo", "message": sendmessage};
-    //var message = {"messagetype":"message"};
     var mes_json = JSON.stringify(message);
     console.log(mes_json);
     props.socket.emit(mes_json);
-
 }
 
 const MemoArea = (props: MemoAreaProps) => {
@@ -102,8 +93,6 @@ const MemoArea = (props: MemoAreaProps) => {
     React.useEffect(() => {
         console.log(newMessage)
         const newtPresenters = tPresenterList.map((p) => {
-            //json内容によって変える．送信者をつけてよければ，こちらのモードで
-            console.log(newMessage)
             if (p.id == Number(newMessage["presenter"])) {
                 p.chats.push(newMessage["sender"]+": "+newMessage["message"])
                 return{...p, chats:p.chats}
