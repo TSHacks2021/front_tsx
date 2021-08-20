@@ -177,12 +177,12 @@ const MemoArea = (props: MemoAreaProps) => {
         //取得された文字列を保存
         const newPresenters = tPresenterList.map((p) => {
             return p.id === id
-                ? {...p, memo:memo}
+                ? {...p, privateMemo:memo}
                 :p;
         });
         setTPresenterList(newPresenters);
         //save用の個所に保存しておく
-        savedummypresenters = newPresenters.slice()
+        saveTPresentersList = newPresenters.slice()
     };
 
     //送信ボタンが押された場合
