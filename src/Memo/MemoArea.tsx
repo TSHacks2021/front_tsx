@@ -47,8 +47,8 @@ type MemoAreaProps = {
     timeInfo: TimeInfo;
 }
 
-var dummypresenters: TodayPresenter[];
-var savedummypresenters: TodayPresenter[] = new Array(0);
+var savepresenterNmaeList: string[] = new Array(0); //保存用の発表者の名前リスト
+var saveTPresentersList: TodayPresenter[] = new Array(0); //保存用の発表者リスト
 var checksetMessage: any = null;
 var checksetPresenters:any = null;
 
