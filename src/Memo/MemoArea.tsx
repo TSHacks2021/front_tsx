@@ -12,6 +12,7 @@ import { receiveMessageOnPort } from "worker_threads";
 
 //function SampleMemo() {
 
+/*ダミーデータ
 const dummyPresenters: TodayPresenter[] = [
     {
         id: 1,
@@ -38,7 +39,7 @@ const dummyPresenters: TodayPresenter[] = [
         chats: [""],
     },
 ];
-
+*/
 type MemoAreaProps = {
     //tPresenters: TodayPresenter[];
     //presenterNum: number;
