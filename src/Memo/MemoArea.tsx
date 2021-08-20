@@ -98,6 +98,7 @@ const MemoArea = (props: MemoAreaProps) => {
         //console.log("b");
         setNewMessage(props.timeInfo.getChatMessage())}, 100);
 
+    //発表者が変更された時
     React.useEffect(() => {
         console.log(newMessage)
         const newtPresenters = tPresenterList.map((p) => {
