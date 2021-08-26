@@ -9,8 +9,8 @@ import reportWebVitals from './reportWebVitals';
 import MemoArea from './Memo/MemoArea';
 
 
-let ws = new WebSocket("ws://localhost:8080/ws");
-//let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+//let ws = new WebSocket("ws://localhost:8080/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 
 const timeInfo = new TimeInfo(socket);
@@ -35,15 +35,6 @@ ReactDOM.render(
     <Memo timeInfo={timeInfo}
       socket={socket}/>
 
-    <button onClick={()=>{
-      // var message = "React!";
-      var message = {messagetype:"memo", message:"React!"};
-      var mes_json = JSON.stringify(message);
-      console.log(mes_json);
-      socket.emit(mes_json);
-    }}>
-      送信
-    </button>
   </React.StrictMode>,
   document.getElementById('root')
 );
