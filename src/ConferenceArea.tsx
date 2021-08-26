@@ -7,7 +7,6 @@ import {TimeInfo} from "./TimeInfo";
 
 import Socket from './WebSocket';
 
-import axios from 'axios';
 
 type ConferenceAreaProps = {
     socket: Socket;
