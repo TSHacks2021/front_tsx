@@ -5,12 +5,11 @@ type TabTitleProps = {
     title: string
     index: number
     setSelectedTab: (index: number) => void
-
     isSelected: boolean
 }
 
 const TabTitle: React.FC<TabTitleProps> = ({title, setSelectedTab, index, isSelected}) => {
-
+    //タブが選択された場合
     const onClick = useCallback(() => {
         setSelectedTab(index)
     }, [setSelectedTab, index])
@@ -20,6 +19,7 @@ const TabTitle: React.FC<TabTitleProps> = ({title, setSelectedTab, index, isSele
 
             {
                 (() => {
+                    //選択されているかどうかで色を変更する
                     if(isSelected) {
                         return <button className="selected" onClick={onClick}>{title}</button>
                     } else {
@@ -27,7 +27,6 @@ const TabTitle: React.FC<TabTitleProps> = ({title, setSelectedTab, index, isSele
                     }
                 })()
             }
-            {/*<button onClick={onClick}>{title}</button>*/}
         </li>
     )
 }

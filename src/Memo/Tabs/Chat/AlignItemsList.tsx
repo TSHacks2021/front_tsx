@@ -1,12 +1,8 @@
-  
-
 import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-
 
 import "./AlignItemsList.css"
 
@@ -23,6 +19,7 @@ type AlignItemsListProps = {
     chats: string[]
 }
 
+//　チャット内容を表示する
 const AlignItemsList = (props: AlignItemsListProps) => {
     const[chats, setChats] = useState(props.chats)
     const classes = useStyles();

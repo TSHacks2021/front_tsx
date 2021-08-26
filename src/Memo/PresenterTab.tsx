@@ -6,40 +6,39 @@ import ChatArea from "./Tabs/Chat/ChatArea";
 
 type PresenterTabProps = {
     presenter: TodayPresenter;
-    onMemoChange: (id: number, memo: string) => void;
-
-    onSendButtonClick: (presenterName:string, message: string) => void;
+    onPrivateMemoChange: (id: number, memo: string) => void;
+    onSendButtonClick: (presenter:number, name:string, message: string) => void;
 };
 
 const PresenterTab = (props:PresenterTabProps) => {
-    const {name, memo, chats} = props.presenter;
+    const {name, privateMemo, chats} = props.presenter;
 
-    const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        props.onMemoChange(props.presenter.id, e.target.value);
+    //PrivateMemoが変更されたら
+    const handlePrivateMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        props.onPrivateMemoChange(props.presenter.id, e.target.value);
     };
 
-    const handleSendButtonClick = (message: string) => {
-        props.onSendButtonClick(props.presenter.name, message);
+    //PublicMemoの送信ボタンが押されたら
+    const handleSendButtonClick = (name: string, message: string) => {
+        props.onSendButtonClick(props.presenter.id, name, message);
     };
 
+    //Tab.tsx, ChatArea.tsxへ
     return(
         <div className="presenter-tab">
             <Tab title="a">
                 <div className="box">
                 <div className="field">
                     <textarea
-                        //type="text"
                         className="memo"
-
                         placeholder="プライベートメモ"
-                        value={memo}
-                        onChange={handleMemoChange}
+                        value={privateMemo}
+                        onChange={handlePrivateMemoChange}
                     />
                 </div>
                 <div className="field">
                     <ChatArea
-                        chats={chats}/*value={chats}*/
-
+                        chats={chats}
                         onSendButtonClick={handleSendButtonClick}
                     />
                 </div>
