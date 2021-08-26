@@ -68,14 +68,16 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
       presentTime_ = Math.floor((now.getTime() - startDate.getTime()) /1000);
     }
 
-    // タイマーをリスタート
-    const [startDate_, endDate_] = props.timeInfo.toNextPresenter(presentTime_);
-    presentTime_ = Math.floor((endDate_.getTime() - startDate_.getTime()) /1000);
-    restart(endDate_ as unknown as number);
 
-    setPresentTime(presentTime_);
-    setStartDate(startDate_);
-    setEndDate(endDate_);
+    // タイマーをリスタート
+    // const [startDate_, endDate_] = 
+    props.timeInfo.toNextPresenter(presentTime_); // インデックスを進める
+    // presentTime_ = Math.floor((endDate_.getTime() - startDate_.getTime()) /1000);
+    // restart(endDate_ as unknown as number);
+
+    // setPresentTime(presentTime_);
+    // setStartDate(startDate_);
+    // setEndDate(endDate_);
   }
 
   const update = () => {
@@ -84,6 +86,8 @@ function DisplayTime( props: Props, { expiryTimestamp }: { expiryTimestamp: numb
     const presentTime_ = Math.floor((endDate_.getTime() - startDate_.getTime()) /1000);
 
     restart(endDate_ as unknown as number);
+    console.log(startDate_);
+    console.log(endDate_);
 
     setPresentTime(presentTime_);
     setStartDate(startDate_);
