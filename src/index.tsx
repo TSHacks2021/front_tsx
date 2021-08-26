@@ -7,11 +7,11 @@ import { TimeInfo } from './TimeInfo';
 import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
 import MemoArea from './Memo/MemoArea';
-//import ConferenceArea from './ConferenceArea';
+import ConferenceArea from './ConferenceArea';
 
 
-let ws = new WebSocket("ws://localhost:8080/ws");
-//let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+//let ws = new WebSocket("ws://localhost:8080/ws");
+let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 
 const timeInfo = new TimeInfo(socket);
@@ -28,15 +28,15 @@ function receiveMessage(e:any){
   if (message.messagetype == "change") timeInfo.receiveChangePresenter(message);
 }
 
-
+/**
+ * ConferenceAreaを配置することで，タブのクリックよる会議の切り替えができるはず
+ * 試していないし，複数の会議を用意していないので，細かいところは未実装
+ * どのようにして，会議の情報を取得し，反映させるのかまだ実装できていない
+ */
 ReactDOM.render(
   <React.StrictMode>
-    {/*<ConferenceArea 
+    <ConferenceArea 
       timeInfo={timeInfo}
-    socket={socket}/>*/}
-    <Time timeInfo={timeInfo}/>
-
-    <Memo timeInfo={timeInfo}
     socket={socket}/>
 
   </React.StrictMode>,
