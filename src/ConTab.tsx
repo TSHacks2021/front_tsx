@@ -1,5 +1,4 @@
 import React from "react";
-//import "./Tab.css"
 
 type ConTabProps = {
     title: string;
