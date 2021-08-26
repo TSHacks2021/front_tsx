@@ -24,7 +24,7 @@ function receiveMessage(e:any){
   }
 
   if (message.messagetype == "setting") timeInfo.receiveTimeInfo(message);
-  if (message.messagetype == "changepresenter") timeInfo.receiveChangePresenter(message);
+  if (message.messagetype == "change") timeInfo.receiveChangePresenter(message);
 }
 
 

@@ -4,7 +4,7 @@ import Socket from './WebSocket';
 
 type Presenter = {
   name: string;
-  time: number;
+  time: number; // 秒
 }
 
 export class TimeInfo{
@@ -13,7 +13,7 @@ export class TimeInfo{
   private startTime: Date = new Date();
   private endTime: Date = new Date();
   private numPresenters: number = 1;
-  private presenters: Presenter[] = new Array(this.numPresenters).fill({name: '', time: 0});
+  private presenters: Presenter[] = new Array(this.numPresenters).fill(null).map(e=>({name: '', time: 0}));
   private nowPresenterIndex = -1;
   private presentTime = 0;
   private breakTime = 0;
@@ -30,7 +30,10 @@ export class TimeInfo{
       {name:'def', time:1500},
       {name:'break', time:600},
       {name:'ghi', time:1500},
-      {name:'jkl', time:1500}];
+      {name:'jkl', time:1500}
+    ];
+    this.presentTime = 25;
+    this.breakTime = 10;
 
     this.socket = socket;
   }
@@ -180,19 +183,20 @@ export class TimeInfo{
 
   setPresenterList(presenterlist: string[]){
 
-    var presenters = this.presenters.slice(0, this.presenters.length);
+    var presenters: Presenter[] = new Array(presenterlist.length).fill(null).map(e=>({name: '', time: 0}));
     for (var i=0; i < presenters.length; i++){
       presenters[i]['name'] = presenterlist[i];
     }
     this.presenters = presenters;
-
+    
   }
 
   getTimeSetting(){
     var timesetting = [];
     for (const presenter of this.presenters){
-      timesetting.push(presenter['time']);
+      timesetting.push((presenter['time']/60)); //分に直して送信
     }
+    console.log(timesetting);
     return timesetting;
   }
 
@@ -200,9 +204,11 @@ export class TimeInfo{
 
     var presenters = this.presenters.slice(0, this.presenters.length);
     for (var i=0; i < presenters.length; i++){
-      presenters[i]['time'] = timesetting[i];
+      presenters[i]['time'] = timesetting[i] *60; //分で送られてくるので秒に直す
     }
     this.presenters = presenters;
+    console.log(timesetting);
+    console.log(this.presenters);
   }
 
 
@@ -223,7 +229,7 @@ export class TimeInfo{
 
   sendChangePresenter(){
     const message = {
-      messagetype: "changepresenter",
+      messagetype: "change",
       nextpresenter: this.nowPresenterIndex,
       timesetting: this.getTimeSetting(),
     }
@@ -236,8 +242,9 @@ export class TimeInfo{
     this.setPresenterList(message.presenterlist);
     this.setStartTime(new Date(message.starttime));
     this.setEndTime(new Date(message.endtime));
-    this.setPresentTime(message.presenttime);
-    this.setBreakTime(message.breaktime);
+    this.setTimeSetting(message.timesetting); //message.timesettingは分単位になってる
+    // this.setPresentTime(message.presenttime);
+    // this.setBreakTime(message.breaktime);
   }
 
   getChatMessage() {
