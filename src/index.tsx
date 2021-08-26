@@ -7,10 +7,11 @@ import { TimeInfo } from './TimeInfo';
 import Socket from './WebSocket';
 import reportWebVitals from './reportWebVitals';
 import MemoArea from './Memo/MemoArea';
+//import ConferenceArea from './ConferenceArea';
 
 
-//let ws = new WebSocket("ws://localhost:8080/ws");
-let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
+let ws = new WebSocket("ws://localhost:8080/ws");
+//let ws = new WebSocket("wss://warm-gorge-29708.herokuapp.com/ws");
 let socket = new Socket(ws);
 
 const timeInfo = new TimeInfo(socket);
@@ -30,10 +31,13 @@ function receiveMessage(e:any){
 
 ReactDOM.render(
   <React.StrictMode>
+    {/*<ConferenceArea 
+      timeInfo={timeInfo}
+    socket={socket}/>*/}
     <Time timeInfo={timeInfo}/>
 
     <Memo timeInfo={timeInfo}
-      socket={socket}/>
+    socket={socket}/>
 
   </React.StrictMode>,
   document.getElementById('root')
