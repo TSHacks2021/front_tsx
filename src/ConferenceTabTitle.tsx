@@ -10,6 +10,10 @@ type ConferenceTabTitleProps = {
 
 const ConferenceTabTitle: React.FC<ConferenceTabTitleProps> = ({title, setSelectedTab, index, isSelected}) => {
     //タブが選択された場合
+    /**
+     * 選択されたタブに応じて動作するところ
+     * 選択されるとタブの色が変わる
+     */
     const onClick = useCallback(() => {
         setSelectedTab(index)
     }, [setSelectedTab, index])
