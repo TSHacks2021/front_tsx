@@ -217,8 +217,8 @@ export class TimeInfo{
     const message = {
       messagetype: "setting",
       presenterlist: this.getPresenterList(),
-      starttime: this.startTime.getTime(),
-      endtime: this.endTime.getTime(),
+      starttime: Math.floor(this.startTime.getTime()/1000),
+      endtime: Math.floor(this.endTime.getTime()/1000),
       presenttime: this.presentTime * 60, //秒に直して送信
       breaktime: this.breakTime * 60, //秒に直して送信
     }
@@ -242,8 +242,8 @@ export class TimeInfo{
 
   receiveTimeInfo(message:any){
     this.setPresenterList(message.presenterlist);
-    this.setStartTime(new Date(message.starttime));
-    this.setEndTime(new Date(message.endtime));
+    this.setStartTime(new Date(message.starttime*1000));
+    this.setEndTime(new Date(message.endtime*1000));
     this.setTimeSetting(message.timesetting); //message.timesettingは分単位になってる
     // this.setPresentTime(message.presenttime);
     // this.setBreakTime(message.breaktime);
