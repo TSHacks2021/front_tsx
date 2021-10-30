@@ -34,6 +34,7 @@ function SettingContents(props: Props) {
     var startTime = new Date();
     startTime.setHours(h);
     startTime.setMinutes(min);
+    startTime.setSeconds(0);
     props.timeInfo.setStartTime(startTime); 
 
     setStartHour(h);
@@ -47,6 +48,7 @@ function SettingContents(props: Props) {
     var endTime = new Date();
     endTime.setHours(h);
     endTime.setMinutes(min);
+    endTime.setSeconds(0);
     props.timeInfo.setEndTime(endTime); 
 
     setEndHour(h);
