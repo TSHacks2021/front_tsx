@@ -9,7 +9,6 @@ type Presenter = {
 
 export class TimeInfo{
 
-
   private startTime: Date = new Date();
   private endTime: Date = new Date();
   private numPresenters: number = 1;
@@ -47,10 +46,12 @@ export class TimeInfo{
   }
   
   setStartTime(startTime: Date){
+    startTime.setSeconds(0);
     this.startTime = startTime;
   }
 
   setEndTime(endTime: Date){
+    endTime.setSeconds(0);
     this.endTime = endTime;
   }
 
@@ -145,19 +146,19 @@ export class TimeInfo{
   }
 
   getNowPresentDate(){
-    // 今の発表者の開始時刻と終了予定時刻，発表時間を返す
+    // 今の発表者の開始時刻と終了予定時刻を返す
 
     var sec = 0;
     for(var i=0; i<this.nowPresenterIndex; i++){
       sec += this.presenters[i]['time'];
     }
     const nowPresenterStartDate = new Date();
-    nowPresenterStartDate.setSeconds(this.startTime.getSeconds() + sec); //会議開始時刻 + 一人前までの発表時間の和
+    nowPresenterStartDate.setTime(this.startTime.getTime() + sec*1000); //会議開始時刻 + 一人前までの発表時間の和
     const nowPresenterEndDate = new Date();
-    nowPresenterEndDate.setSeconds(nowPresenterStartDate.getSeconds() + this.presenters[this.nowPresenterIndex]['time']); //発表開始時刻 + 発表時間
+    nowPresenterEndDate.setTime(nowPresenterStartDate.getTime() + this.presenters[this.nowPresenterIndex]['time']*1000); //発表開始時刻 + 発表時間
 
-    console.log("getNowPresentDate")
-    console.log(this.presenters);
+    console.log("getNowPresentDate");
+    // console.log(this.presenters);
     return [nowPresenterStartDate, nowPresenterEndDate];
   }
 
@@ -260,6 +261,17 @@ export class TimeInfo{
   receiveChangePresenter(message:any){
     this.setNowPresenterIndex(message.nextpresenter - 1);
     this.setTimeSetting(message.timesetting);
+  }
+
+  recieveTimeInfoFromAPI(id=5){
+    fetch('http://localhost:8080/setting/5')
+    .then(response => {
+      var message = response.json();
+      this.receiveTimeInfo(message);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
   }
 
 }
